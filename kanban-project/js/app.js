@@ -1250,16 +1250,22 @@ function deleteTask(taskId) {
         });
 
         // 任务详情模态框事件监听器
-        taskDetailCloseBtn.addEventListener('click', () => {
-            taskDetailModal.close();
-        });
+        if (taskDetailCloseBtn && taskDetailModal) {
+            taskDetailCloseBtn.addEventListener('click', () => {
+                taskDetailModal.close();
+            });
+        }
 
-        jumpToKanbanBtn.addEventListener('click', jumpToKanban);
+        if (jumpToKanbanBtn) {
+            jumpToKanbanBtn.addEventListener('click', jumpToKanban);
+        }
 
         // 当天任务列表模态框事件监听器
-        dayTasksCloseBtn.addEventListener('click', () => {
-            dayTasksModal.close();
-        });
+        if (dayTasksCloseBtn && dayTasksModal) {
+            dayTasksCloseBtn.addEventListener('click', () => {
+                dayTasksModal.close();
+            });
+        }
 
         // 提醒横幅事件监听器
         reminderBannerClose.addEventListener('click', hideReminderBanner);
@@ -1414,7 +1420,7 @@ function deleteTask(taskId) {
      */
     function showTaskDetail(taskId) {
         const task = tasks.find(t => t.id === taskId);
-        if (!task) return;
+        if (!task || !taskDetailContent || !taskDetailModal) return;
         
         selectedTaskForDetail = task;
         
@@ -1467,6 +1473,8 @@ function deleteTask(taskId) {
      * @param {string} dateStr - 日期字符串 (YYYY-MM-DD)
      */
     function showDayTasks(dateStr) {
+        if (!dayTasksTitle || !dayTasksContent || !dayTasksModal) return;
+
         const date = new Date(dateStr);
         const dayTasks = tasks.filter(task => {
             if (!task.dueDate) return false;
@@ -1498,12 +1506,16 @@ function deleteTask(taskId) {
             const taskItem = e.target.closest('.day-task-item');
             if (taskItem) {
                 const taskId = taskItem.dataset.taskId;
-                dayTasksModal.close();
+                if (dayTasksModal) {
+                    dayTasksModal.close();
+                }
                 showTaskDetail(taskId);
             }
         });
-        
-        dayTasksModal.showModal();
+
+        if (dayTasksModal) {
+            dayTasksModal.showModal();
+        }
     }
     
     /**
@@ -1512,7 +1524,9 @@ function deleteTask(taskId) {
     function jumpToKanban() {
         if (!selectedTaskForDetail) return;
         
-        taskDetailModal.close();
+        if (taskDetailModal) {
+            taskDetailModal.close();
+        }
         setView(selectedTaskForDetail.status);
         
         // 高亮任务卡片
