@@ -61,15 +61,12 @@
 ```
 kanban-project/
 ├── index.html          # 主页面
-├── css/                # 样式文件夹
-│   ├── variables.css 等
+├── styles.css          # 样式文件
 ├── assets/             # 资源文件夹
 │   ├── image.png       # 示例图片
 │   ├── image2.png      # 示例图片
 │   └── README.md       # 项目文档
-├── js/                 # 脚本模块
-│   ├── main.js
-│   └── ...
+├── app.js              # 应用逻辑
 ```
 
 ### 技术栈
