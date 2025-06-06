@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>任务管理看板 (Kanban Board)</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- 1. 应用头部 -->
+    <header class="app-header">
+        <h1 class="app-header__title">任务管理看板</h1>
+        <div class="app-header__actions">
+            <button class="theme-switcher" id="theme-switcher" aria-label="切换主题">切换主题</button>
+        </div>
+    </header>
+
+    <div class="app-container">
+        <!-- 2. 左侧导航栏 -->
+        <nav class="app-nav" id="app-nav">
+            <button class="nav-toggle" id="nav-toggle" aria-label="折叠/展开导航栏">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M18.75 19.5l-7.5-7.5 7.5-7.5m-6 15L5.25 12l7.5-7.5" /></svg>
+                <span class="nav__list-text">收起导航</span>
+            </button>
+            <h2 class="nav__title">视图</h2>
+            <div class="nav__view-buttons" id="view-buttons">
+                <button class="nav__view-btn" data-view="all" aria-pressed="true">全部</button>
+                <button class="nav__view-btn" data-view="todo" aria-pressed="false">待办事项</button>
+                <button class="nav__view-btn" data-view="in-progress" aria-pressed="false">进行中</button>
+                <button class="nav__view-btn" data-view="done" aria-pressed="false">已完成</button>
+                <button class="nav__view-btn" data-view="calendar" aria-pressed="false">日历视图</button>
+            </div>
+            <div class="search-filter-container">
+                <div class="search-box">
+                    <input type="search" id="search-input" placeholder="搜索任务标题或描述...">
+                </div>
+
+                <!-- 筛选区域 -->
+                <div class="filter-area">
+                    <div class="filter-group">
+                        <label for="priority-filter">优先级</label>
+                        <select id="priority-filter">
+                            <option value="all">全部</option>
+                            <option value="high">高</option>
+                            <option value="medium">中</option>
+                            <option value="low">低</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>标签</label>
+                        <div id="label-filter-container" class="label-filter-container">
+                            <!-- 标签将由JS动态生成 -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 旧的筛选按钮和下拉框，暂时保留但可以考虑合并 -->
+                <div class="filter-container">
+                    <button class="filter-btn" id="filter-btn">状态筛选</button>
+                    <div class="filter-dropdown" id="filter-dropdown">
+                        <div class="filter-group">
+                            <h4>按状态</h4>
+                            <label><input type="checkbox" name="status" value="todo" checked> 待办事项</label>
+                            <label><input type="checkbox" name="status" value="in-progress" checked> 进行中</label>
+                            <label><input type="checkbox" name="status" value="done" checked> 已完成</label>
+                        </div>
+                        <div class="filter-group">
+                            <h4>按截止日期</h4>
+                            <label><input type="checkbox" name="date" value="upcoming"> 7天内到期</label>
+                        </div>
+                         <button id="clear-filters-btn" style="width:100%; text-align:center; color: var(--text-secondary); margin-top:8px;">清除筛选</button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- 3. 主看板区域 -->
+        <main class="main-content">
+            <!-- 提醒横幅 -->
+            <div class="reminder-banner" id="reminder-banner" style="display: none;">
+                <div class="reminder-banner__content">
+                    <span class="reminder-banner__text" id="reminder-banner-text"></span>
+                    <button class="reminder-banner__close" id="reminder-banner-close" aria-label="关闭提醒">&times;</button>
+                </div>
+            </div>
+
+            <!-- 看板视图 -->
+            <div class="kanban-board" id="kanban-board">
+                <!-- 看板列将由JS动态生成 -->
+                <section class="kanban-column" id="column-todo" data-status="todo">
+                    <header class="kanban-column__header">
+                        <h2 class="kanban-column__title">待办事项 (<span class="task-count">0</span>)</h2>
+                        <button class="add-task-btn" data-status="todo" aria-label="添加新任务到Todo列">+</button>
+                    </header>
+                    <div class="kanban-column__cards" data-status="todo"></div>
+                </section>
+                <section class="kanban-column" id="column-in-progress" data-status="in-progress">
+                    <header class="kanban-column__header">
+                        <h2 class="kanban-column__title">进行中 (<span class="task-count">0</span>)</h2>
+                        <button class="add-task-btn" data-status="in-progress" aria-label="添加新任务到In Progress列">+</button>
+                    </header>
+                    <div class="kanban-column__cards" data-status="in-progress"></div>
+                </section>
+                <section class="kanban-column" id="column-done" data-status="done">
+                    <header class="kanban-column__header">
+                        <h2 class="kanban-column__title">已完成 (<span class="task-count">0</span>)</h2>
+                        <button class="add-task-btn" data-status="done" aria-label="添加新任务到Done列">+</button>
+                    </header>
+                    <div class="kanban-column__cards" data-status="done"></div>
+                </section>
+            </div>
+
+            <!-- 日历视图 -->
+            <div class="calendar-view" id="calendar-view" style="display: none;">
+                <div class="calendar-header">
+                    <button class="calendar-nav-btn" id="calendar-prev-month" aria-label="上个月">&lt;</button>
+                    <h2 class="calendar-title" id="calendar-title">2025年6月</h2>
+                    <button class="calendar-nav-btn" id="calendar-next-month" aria-label="下个月">&gt;</button>
+                </div>
+                <div class="calendar-grid" id="calendar-grid">
+                    <div class="calendar-weekdays">
+                        <div class="calendar-weekday">日</div>
+                        <div class="calendar-weekday">一</div>
+                        <div class="calendar-weekday">二</div>
+                        <div class="calendar-weekday">三</div>
+                        <div class="calendar-weekday">四</div>
+                        <div class="calendar-weekday">五</div>
+                        <div class="calendar-weekday">六</div>
+                    </div>
+                    <div class="calendar-days" id="calendar-days">
+                        <!-- 日期格子将由JS动态生成 -->
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 4. 新增/编辑任务的模态对话框 -->
+    <dialog class="task-modal" id="task-modal">
+        <header class="modal-header">
+            <h2 class="modal-title" id="modal-title">添加新任务</h2>
+            <button class="modal-close-btn" id="modal-close-btn" aria-label="关闭对话框">&times;</button>
+        </header>
+        <form id="task-form">
+            <input type="hidden" id="task-id">
+            <div class="form-group">
+                <label for="task-title">标题</label>
+                <input type="text" id="task-title" name="title" required>
+                <p class="error-message">标题不能为空</p>
+            </div>
+            <div class="form-group">
+                <label for="task-description">描述</label>
+                <textarea id="task-description" name="description"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="task-due-date">截止日期</label>
+                <input type="date" id="task-due-date" name="dueDate">
+                <p class="error-message">截止日期不能早于今天</p>
+            </div>
+            <div class="form-group">
+                <label for="task-priority">优先级</label>
+                <select id="task-priority" name="priority">
+                    <option value="medium">中</option>
+                    <option value="high">高</option>
+                    <option value="low">低</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="task-labels">标签 (用英文逗号分隔)</label>
+                <input type="text" id="task-labels" name="labels" placeholder="例如: 重要, 前端, Bug">
+                <div id="label-suggestions" class="label-suggestions"></div>
+            </div>
+            <div class="form-group">
+                <label for="task-reminder">提醒设置</label>
+                <select id="task-reminder" name="reminder">
+                    <option value="">不提醒</option>
+                    <option value="same-day-09">截止日当天 09:00</option>
+                    <option value="same-day-18">截止日当天 18:00</option>
+                    <option value="one-day-before-18">截止日前 1 天 18:00</option>
+                </select>
+            </div>
+            <button type="submit" class="submit-btn" id="task-submit-btn">创建任务</button>
+        </form>
+    </dialog>
+
+<script src="./js/app.js"></script>
+</body>
+</html>
