@@ -1,4 +1,7 @@
-[中文版 (Read in Chinese)](README_zh.md)
+<div align="center">
+[中文 (Read in Chinese)](README_zh.md)
+</div>
+
 # Task Management Kanban Board
 
 A full-featured task management application that supports a Kanban board view, calendar view, and task reminder functionality.
