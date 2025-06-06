@@ -1,6 +1,4 @@
-<div align="center">
 [中文 (Read in Chinese)](README_zh.md)
-</div>
 
 # Task Management Kanban Board
 
