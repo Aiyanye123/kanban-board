@@ -1,0 +1,453 @@
+/* --- 3. 页面布局 --- */
+.app-container {
+    display: flex;
+    height: calc(100vh - 80px); /* 减去 Header 高度 */
+}
+
+/* --- 3.1 Header --- */
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 24px;
+    height: 80px;
+    background-color: var(--bg-header);
+    border-bottom: 1px solid var(--border-color);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+    flex-shrink: 0;
+}
+
+.app-header__title {
+    font-size: 24px;
+}
+
+.app-header__actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.theme-switcher {
+    padding: 8px 12px;
+    background-color: var(--accent-color);
+    color: white;
+    border-radius: 20px;
+    transition: background-color 0.3s ease;
+}
+.theme-switcher:hover {
+    background-color: var(--accent-color-hover);
+}
+
+/* 多面板切换按钮样式 */
+.multi-panel-toggle {
+  padding: 8px 12px;
+  background-color: var(--accent-color);
+  color: white;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.multi-panel-toggle:hover {
+  background-color: var(--accent-color-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.multi-panel-toggle:active {
+  transform: translateY(0);
+}
+
+.toggle-icon {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.single-icon, .multi-icon {
+  position: absolute;
+  transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  font-size: 18px;
+}
+
+.multi-panel-toggle.active .single-icon {
+  transform: translateY(-30px) rotate(-15deg);
+  opacity: 0;
+}
+
+.multi-panel-toggle.active .multi-icon {
+  transform: translateY(0) rotate(0);
+  opacity: 1;
+}
+
+.multi-panel-toggle:not(.active) .single-icon {
+  transform: translateY(0) rotate(0);
+  opacity: 1;
+}
+
+.multi-panel-toggle:not(.active) .multi-icon {
+  transform: translateY(30px) rotate(15deg);
+  opacity: 0;
+}
+
+.toggle-text {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+/* 按钮动画效果 */
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+  40% {transform: translateY(-10px);}
+  60% {transform: translateY(-5px);}
+}
+
+.multi-panel-toggle.active {
+  background-color: var(--column-bg-inprogress);
+  animation: bounce 0.6s ease;
+}
+
+/* --- 3.2 Navigation --- */
+.app-nav {
+    width: 260px;
+    flex-shrink: 0;
+    background-color: var(--bg-secondary);
+    border-right: 1px solid var(--border-color);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    transition: width 0.3s ease, padding 0.3s ease, transform 0.3s ease;
+}
+.app-nav.collapsed {
+    width: 60px;
+    padding: 24px 0;
+    align-items: center;
+}
+.app-nav.collapsed .nav__title,
+.app-nav.collapsed .nav__list-text,
+.app-nav.collapsed .search-filter-container {
+    display: none;
+}
+.app-nav.collapsed .nav-toggle {
+    justify-content: center;
+}
+
+.nav-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--text-secondary);
+    margin-bottom: 24px;
+    padding: 10px;
+    border-radius: 8px;
+    width: 100%;
+}
+.nav-toggle:hover {
+    background-color: var(--bg-tertiary);
+}
+.nav-toggle svg {
+    width: 20px;
+    height: 20px;
+    transition: transform 0.3s ease;
+}
+.app-nav.collapsed .nav-toggle svg {
+    transform: rotate(180deg);
+}
+
+.nav__title {
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 24px;
+}
+
+.nav__view-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 24px;
+}
+
+.nav__view-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 24px;
+    margin-right: -24px; /* 让高亮背景填满 */
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    text-decoration: none;
+    font-weight: bold;
+    color: var(--text-secondary);
+    text-align: left;
+    width: 100%;
+}
+
+.nav__view-btn[aria-pressed="true"] {
+    background-color: var(--accent-color);
+    color: white;
+}
+
+.nav__view-btn:not([aria-pressed="true"]):hover {
+    background-color: var(--bg-tertiary);
+    color: var(--accent-color);
+}
+
+.app-nav.collapsed .nav__view-btn {
+    justify-content: center;
+    margin: 0 auto;
+    border-radius: 8px;
+    width: 48px;
+    height: 48px;
+}
+.app-nav.collapsed .nav__view-btn .nav__list-text {
+    display: none;
+}
+
+/* --- 3.3 Search & Filter --- */
+.search-filter-container {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.search-box input {
+    width: 100%;
+    padding: 8px 12px;
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+}
+.filter-container {
+    position: relative;
+}
+.filter-btn {
+    width: 100%;
+    padding: 8px 12px;
+    background-color: var(--accent-color);
+    color: white;
+    border-radius: 20px;
+    transition: background-color 0.3s ease;
+}
+.filter-btn:hover {
+    background-color: var(--accent-color-hover);
+}
+.filter-dropdown {
+    display: none;
+    position: absolute;
+    bottom: 110%;
+    left: 0;
+    width: 100%;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px var(--shadow-color);
+    padding: 16px;
+    z-index: 20;
+}
+.filter-dropdown.show {
+    display: block;
+}
+.filter-group {
+    margin-bottom: 12px;
+}
+.filter-group h4 {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+.filter-group label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    margin-bottom: 4px;
+    cursor: pointer;
+}
+
+/* --- 3.3.1 New Filter Area --- */
+.filter-area {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border-color);
+}
+
+.filter-area .filter-group label {
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
+.filter-area .filter-group select {
+    width: 100%;
+    padding: 8px 12px;
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+.label-filter-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.label-filter-tag {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+}
+
+.label-filter-tag.active {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 2px var(--accent-color);
+}
+
+.label-filter-tag-wrapper {
+    display: flex;
+    align-items: center;
+    background-color: var(--bg-tertiary);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.label-filter-tag {
+    border: none; /* 移除单独的边框 */
+}
+
+/* --- 3.4 Main Content (Kanban Board) --- */
+.main-content {
+    flex-grow: 1;
+    padding: 24px;
+    overflow-x: auto; /* 允许水平滚动 */
+    overflow-y: hidden;
+    background-color: var(--bg-primary);
+}
+
+.kanban-board {
+    display: flex;
+    gap: 24px;
+    height: 100%;
+    transition: gap 0.3s ease;
+}
+
+.kanban-board.zoomed-in {
+    gap: 0;
+}
+
+.kanban-column {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    flex: 1 1 0; /* flex-grow, flex-shrink, flex-basis */
+    min-width: 0; /* 关键：防止内容把列撑开 */
+    transition: all 0.4s ease;
+    opacity: 1;
+    visibility: visible;
+}
+
+.kanban-column.is-hidden {
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-basis: 0;
+    opacity: 0;
+    visibility: hidden;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+}
+
+.kanban-board.zoomed-in .kanban-column.is-zoomed {
+    flex-grow: 1;
+    flex-basis: 100%;
+}
+.kanban-column.drag-over {
+    background-color: var(--highlight-bg);
+    border-radius: 8px;
+}
+
+.kanban-column__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.kanban-column__title {
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 2.4px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.kanban-column__title::before {
+    content: '';
+    display: block;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+}
+#column-todo .kanban-column__title::before { background-color: var(--column-bg-todo); }
+#column-in-progress .kanban-column__title::before { background-color: var(--column-bg-inprogress); }
+#column-done .kanban-column__title::before { background-color: var(--column-bg-done); }
+
+.add-task-btn {
+    font-size: 24px;
+    line-height: 1;
+    color: var(--accent-color);
+    padding: 4px;
+    border-radius: 50%;
+}
+.add-task-btn:hover {
+    background-color: var(--bg-tertiary);
+}
+
+.kanban-column__cards {
+    flex-grow: 1;
+    overflow-y: auto; /* 列内垂直滚动 */
+    padding-right: 8px; /* 滚动条空间 */
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+/* 自定义滚动条样式 */
+.kanban-column__cards::-webkit-scrollbar {
+    width: 8px;
+}
+.kanban-column__cards::-webkit-scrollbar-track {
+    background: var(--bg-tertiary);
+    border-radius: 4px;
+}
+.kanban-column__cards::-webkit-scrollbar-thumb {
+    background: var(--accent-color-hover);
+    border-radius: 4px;
+}
+.kanban-column__cards::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-color);
+}
+

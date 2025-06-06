@@ -1,0 +1,132 @@
+/* --- 4. Task Card --- */
+.task-card {
+    background-color: var(--bg-secondary);
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px var(--shadow-color);
+    cursor: grab;
+    transition: all 0.3s ease;
+    position: relative;
+}
+.task-card:active {
+    cursor: grabbing;
+}
+
+/* 优先级样式 */
+.task-card {
+    border-left: 4px solid transparent;
+}
+.task-card.priority--high {
+    border-left-color: var(--color--high);
+}
+.task-card.priority--medium {
+    border-left-color: var(--color--medium);
+}
+.task-card.priority--low {
+    border-left-color: var(--color--low);
+}
+
+.task-card.dragging {
+    opacity: 0.5;
+    transform: scale(1.05) rotate(3deg);
+    box-shadow: 0 8px 16px var(--shadow-color);
+}
+
+.task-card__title {
+    font-size: 15px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.task-card__labels {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 12px;
+}
+
+.task-card__label {
+    padding: 3px 8px;
+    font-size: 11px;
+    font-weight: bold;
+    border-radius: 10px;
+    color: white;
+}
+
+.task-card__description {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 12px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* 限制两行 */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.task-card__due-date {
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--text-secondary);
+}
+.task-card__due-date.overdue {
+    color: var(--danger-color);
+}
+
+.task-card__menu-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    font-size: 20px;
+    color: var(--text-secondary);
+    padding: 4px;
+    border-radius: 4px;
+}
+.task-card__menu-btn:hover {
+    background-color: var(--bg-tertiary);
+}
+.task-card__menu {
+    display: none;
+    position: absolute;
+    top: 30px;
+    right: 8px;
+    background-color: var(--bg-secondary);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px var(--shadow-color);
+    padding: 8px;
+    z-index: 10;
+    list-style: none;
+}
+.task-card__menu.show {
+    display: block;
+}
+.task-card__menu-item button {
+    width: 100%;
+    text-align: left;
+    padding: 8px 12px;
+    border-radius: 4px;
+}
+.task-card__menu-item button:hover {
+    background-color: var(--bg-tertiary);
+}
+.task-card__menu-item--delete button {
+    color: var(--danger-color);
+}
+.task-card__menu-item--delete button:hover {
+    color: white;
+    background-color: var(--danger-color);
+}
+
+/* 卡片隐藏/高亮 */
+.task-card.hidden {
+    display: none;
+}
+.task-card__title mark, .task-card__description mark {
+    background-color: var(--accent-color-hover);
+    color: var(--text-primary);
+    padding: 0 2px;
+    border-radius: 2px;
+}
+
+

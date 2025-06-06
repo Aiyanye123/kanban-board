@@ -1,0 +1,204 @@
+/* --- 6. Subtasks --- */
+.task-card__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.task-card__checkmark {
+    transform: translateX(-10px); 
+    color: var(--column-bg-done);
+    font-weight: bold;
+    font-size: 16px;
+    flex-shrink: 0;
+}
+
+.task-card.task-completed .task-card__title,
+.task-card.task-completed .task-card__description {
+    color: var(--text-secondary);
+    text-decoration: line-through;
+}
+
+.subtask-progress {
+    margin-top: 12px;
+    margin-bottom: 8px;
+}
+
+.subtask-progress__text {
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+    display: block;
+}
+
+.subtask-progress__bar {
+    width: 100%;
+    height: 8px;
+    background-color: var(--bg-tertiary);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.subtask-progress__bar-inner {
+    height: 100%;
+    background-color: var(--accent-color);
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.subtask-panel {
+    display: none; /* Hidden by default */
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border-color);
+}
+
+.subtask-panel.show {
+    display: block;
+    animation: slide-down 0.3s ease-out;
+}
+
+@keyframes slide-down {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.subtask-panel__title {
+    font-size: 13px;
+    font-weight: bold;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+}
+
+.subtask-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.subtask-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px;
+    background-color: var(--bg-primary);
+    border-radius: 4px;
+    cursor: grab;
+}
+.subtask-item:active {
+    cursor: grabbing;
+}
+
+.subtask-item.dragging {
+    opacity: 0.5;
+}
+
+.subtask-item__status {
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--text-secondary);
+    border-radius: 4px;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.subtask-item__status:hover {
+    border-color: var(--accent-color);
+}
+
+.subtask-item[data-status="done"] .subtask-item__status {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+}
+.subtask-item[data-status="done"] .subtask-item__status::after {
+    content: '✔';
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+
+.subtask-item__title {
+    flex-grow: 1;
+    font-size: 14px;
+    outline: none; /* Remove outline on contenteditable */
+}
+
+.subtask-item[data-status="done"] .subtask-item__title {
+    text-decoration: line-through;
+    color: var(--text-secondary);
+}
+
+.subtask-item__actions {
+    display: flex;
+    align-items: center;
+}
+
+.subtask-item__delete-btn {
+    font-size: 18px;
+    line-height: 1;
+    color: var(--text-secondary);
+    padding: 4px;
+    border-radius: 4px;
+    opacity: 0; /* Hidden by default */
+    transition: opacity 0.2s ease;
+}
+
+.subtask-item:hover .subtask-item__delete-btn {
+    opacity: 1;
+}
+
+.subtask-item__delete-btn:hover {
+    color: var(--danger-color);
+    background-color: var(--bg-tertiary);
+}
+
+.add-subtask-form {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.add-subtask-input {
+    flex-grow: 1;
+    padding: 6px 10px;
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+}
+.add-subtask-input:focus {
+    outline: none;
+    border-color: var(--accent-color);
+}
+
+.add-subtask-btn {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    background-color: var(--accent-color);
+    color: white;
+    border-radius: 50%;
+    font-size: 20px;
+    line-height: 1;
+    transition: background-color 0.3s ease;
+}
+.add-subtask-btn:hover {
+    background-color: var(--accent-color-hover);
+}
+
+
