@@ -2,9 +2,9 @@
 
 一个功能完整的任务管理应用，支持看板视图、日历视图和任务提醒功能。
 
-![Kanban Board 截图](/assets/image.png) 
+![Kanban Board 截图](image.png) 
 
-![Kanban Board 截图](/assets/image2.png)
+![Kanban Board 截图](image2.png)
 
 ## 功能特点
 
