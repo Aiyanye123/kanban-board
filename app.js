@@ -1791,4 +1791,97 @@ function deleteTask(taskId) {
     // 启动应用
     initApp();
 
+    /**
+     * @description 导出看板数据为JSON文件
+     */
+    function exportBoard() {
+        const boardData = {
+            tasks: tasks,
+            labels: labels,
+            version: '1.0'
+        };
+        
+        const boardName = document.querySelector('.app-header__title').textContent || '看板';
+        const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+        const filename = `kanban-${boardName}-${timestamp}.json`;
+        
+        const blob = new Blob([JSON.stringify(boardData, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+
+    /**
+     * @description 导入看板数据
+     */
+    function importBoard() {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = '.json';
+        
+        input.onchange = function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const boardData = JSON.parse(e.target.result);
+                    
+                    // 基本验证
+                    if (!boardData.tasks || !boardData.labels) {
+                        throw new Error('无效的看板文件格式');
+                    }
+                    
+                    // 处理重名看板
+                    const existingBoardNames = new Set();
+                    // 实际项目中这里需要从存储中获取已有看板列表
+                    // 此处简化处理：假设只有一个看板，导入后添加"副本"后缀
+                    const newBoardName = document.querySelector('.app-header__title').textContent + '_副本';
+                    document.querySelector('.app-header__title').textContent = newBoardName;
+                    
+                    // 导入数据
+                    tasks = boardData.tasks;
+                    labels = boardData.labels;
+                    
+                    // 保存并刷新
+                    saveTasksToStorage();
+                    renderBoard();
+                    renderLabelFilters();
+                    
+                    alert('看板导入成功！');
+                } catch (error) {
+                    console.error('导入失败:', error);
+                    alert(`导入失败: ${error.message}`);
+                }
+            };
+            reader.readAsText(file);
+        };
+        
+        input.click();
+    }
+
+    /**
+     * @description 添加导入导出功能的事件监听
+     */
+    function addImportExportListeners() {
+        document.getElementById('export-board-btn').addEventListener('click', exportBoard);
+        document.getElementById('import-board-btn').addEventListener('click', importBoard);
+    }
+
+    // 初始化导入导出功能
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', addImportExportListeners);
+    } else {
+        addImportExportListeners();
+    }
+
+    // 初始化导入导出功能
+    addImportExportListeners();
 })();
