@@ -1,0 +1,96 @@
+/* --- 7. Accessibility --- */
+:focus-visible {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px var(--highlight-bg);
+    border-radius: 4px;
+}
+.task-modal:focus-visible { outline: none; } /* dialog自带轮廓 */
+
+/* --- 7. Responsive Design --- */
+
+/* 移动端 (≤ 768px) */
+@media (max-width: 768px) {
+    .app-container {
+        flex-direction: column;
+        height: auto;
+    }
+    .app-nav {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+        flex-direction: row;
+        align-items: center;
+        padding: 12px;
+        height: auto;
+    }
+    .app-nav.collapsed {
+        width: 100%;
+        padding: 12px;
+    }
+    .app-nav .nav-toggle {
+        margin-bottom: 0;
+    }
+    .app-nav .nav__title, .app-nav .nav__list, .search-filter-container {
+        display: none; /* 在移动端默认隐藏导航内容 */
+    }
+
+    .main-content {
+        overflow-x: hidden;
+        padding: 16px;
+    }
+    .kanban-board {
+        grid-auto-flow: row;
+        grid-template-columns: 1fr; /* 垂直堆叠 */
+        gap: 32px;
+    }
+    .kanban-column__cards {
+        height: auto; /* 自动高度 */
+        overflow-y: visible;
+        padding-right: 0;
+    }
+}
+
+/* 平板 (768px - 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .app-nav {
+        width: 200px;
+    }
+    .app-nav.collapsed {
+        width: 60px;
+    }
+    .kanban-board {
+        grid-auto-columns: minmax(280px, 1fr);
+        /* 默认已经是多列，这里可以微调 */
+    }
+}
+
+/* --- 11. 响应式调整 --- */
+@media (max-width: 768px) {
+    .calendar-day {
+        min-height: 80px;
+        padding: 4px;
+    }
+    
+    .calendar-day-number {
+        font-size: 12px;
+    }
+    
+    .calendar-task-item {
+        font-size: 10px;
+        padding: 1px 4px;
+    }
+    
+    .calendar-header {
+        margin-bottom: 16px;
+    }
+    
+    .calendar-title {
+        font-size: 20px;
+    }
+    
+    .reminder-banner {
+        top: 60px;
+        padding: 8px 16px;
+    }
+}
