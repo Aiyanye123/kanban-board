@@ -1714,21 +1714,27 @@ function deleteTask(taskId) {
 
     // --- 12. 应用初始化 ---
     function initApp() {
-        document.addEventListener('DOMContentLoaded', () => {
+        const startApp = () => {
             loadThemeFromStorage();
             loadTasksFromStorage();
             addEventListeners();
             renderBoard();
             renderLabelFilters();
-            
+
             // 初始化视图
             const savedView = loadViewFromStorage();
             setView(savedView, true); // 初始加载，无动画
-            
+
             // 初始化提醒功能
             updateActiveReminders();
             requestNotificationPermission();
-        });
+        };
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', startApp);
+        } else {
+            startApp();
+        }
     }
 
     // 启动应用
