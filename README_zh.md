@@ -1,3 +1,4 @@
+[英文(Read this in English)](README.md)
 # 任务管理看板 (Kanban Board)
 
 一个功能完整的任务管理应用，支持看板视图、日历视图和任务提醒功能。
