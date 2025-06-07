@@ -341,4 +341,4 @@
     box-shadow: 0 0 0 4px var(--highlight-bg);
     border-radius: 4px;
 }
-.task-modal:focus-visible { outline: none; } /* dialog自带轮廓 */
+.task-modal:focus-visible { outline: none; } /* 对话框元素自带轮廓 */
