@@ -65,17 +65,25 @@
 ## 技术细节
 
 ### 文件结构
-
 ```
 kanban-project/
 ├── index.html          # 主页面
-├── styles.css          # 样式文件
+├── app.js              # 应用逻辑
+├── css/                # 样式文件夹
+│   ├── 01-theme.css    # 主题变量定义
+│   ├── 02-base.css     # 基础样式和重置
+│   ├── 03-layout.css   # 页面布局
+│   ├── 04-kanban.css   # 看板样式
+│   ├── 05-task-card.css # 任务卡片样式
+│   ├── 06-modal.css    # 模态框样式
+│   ├── 07-calendar.css # 日历视图样式
+│   ├── 08-components.css # 组件样式
+│   ├── 09-responsive.css # 响应式设计
+│   └── main.css        # 主样式文件(导入其他模块)
 ├── assets/             # 资源文件夹
 │   ├── image.png       # 示例图片
 │   ├── image2.png      # 示例图片
 │   └── README.md       # 项目文档
-├── app.js              # 应用逻辑
-```
 
 ### 技术栈
 
