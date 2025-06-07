@@ -1,4 +1,4 @@
-/* Import all style modules in a logical order */
+/* 依次导入所有樣式模塊 */
 @import url('01-theme.css');
 @import url('02-base.css');
 @import url('03-layout.css');
