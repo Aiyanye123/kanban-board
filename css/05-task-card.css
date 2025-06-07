@@ -181,7 +181,7 @@
 }
 
 .subtask-panel {
-    display: none; /* Hidden by default */
+    display: none; /* 默认隐藏 */
     margin-top: 16px;
     padding-top: 16px;
     border-top: 1px solid var(--border-color);
@@ -267,7 +267,7 @@
 .subtask-item__title {
     flex-grow: 1;
     font-size: 14px;
-    outline: none; /* Remove outline on contenteditable */
+    outline: none; /* 内容可编辑区域去掉轮廓 */
 }
 
 .subtask-item[data-status="done"] .subtask-item__title {
@@ -286,7 +286,7 @@
     color: var(--text-secondary);
     padding: 4px;
     border-radius: 4px;
-    opacity: 0; /* Hidden by default */
+    opacity: 0; /* 默认隐藏 */
     transition: opacity 0.2s ease;
 }
 
