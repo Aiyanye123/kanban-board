@@ -74,12 +74,22 @@ A full-featured task management application that supports a Kanban board view, c
 ```
 kanban-project/
 ├── index.html          # Main page
-├── styles.css          # Stylesheet
+├── app.js              # Application logic
+├── css/                # Styles folder
+│   ├── 01-theme.css    # Theme variables
+│   ├── 02-base.css     # Base styles and reset
+│   ├── 03-layout.css   # Page layout
+│   ├── 04-kanban.css   # Kanban styles
+│   ├── 05-task-card.css # Task card styles
+│   ├── 06-modal.css    # Modal styles
+│   ├── 07-calendar.css # Calendar view styles
+│   ├── 08-components.css # Component styles
+│   ├── 09-responsive.css # Responsive design
+│   └── main.css        # Main styles (imports other modules)
 ├── assets/             # Assets folder
 │   ├── image.png       # Example image
 │   ├── image2.png      # Example image
 │   └── README.md       # Project documentation
-├── app.js              # Application logic
 ```
 
 ### Tech Stack
