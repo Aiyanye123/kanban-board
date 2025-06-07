@@ -84,6 +84,7 @@ kanban-project/
 │   ├── image.png       # 示例图片
 │   ├── image2.png      # 示例图片
 │   └── README.md       # 项目文档
+```
 
 ### 技术栈
 
