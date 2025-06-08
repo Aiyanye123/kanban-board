@@ -1,4 +1,4 @@
-/* 依次导入所有樣式模塊 */
+/* Import all style modules in a logical order */
 @import url('01-theme.css');
 @import url('02-base.css');
 @import url('03-layout.css');
@@ -8,3 +8,5 @@
 @import url('07-calendar.css');
 @import url('08-components.css');
 @import url('09-responsive.css');
+@import url('10-keyboard-shortcuts.css');
+@import url('11-task-details.css');

@@ -1,10 +1,10 @@
 /* --- 3. 页面布局 --- */
 .app-container {
     display: flex;
-    height: calc(100vh - 80px); /* 减去页眉高度 */
+    height: calc(100vh - 80px); /* 减去 Header 高度 */
 }
 
-/* --- 3.1 页眉 --- */
+/* --- 3.1 Header --- */
 .app-header {
     display: flex;
     justify-content: space-between;
@@ -104,7 +104,7 @@
 }
 
 
-/* --- 3.2 导航 --- */
+/* --- 3.2 Navigation --- */
 .app-nav {
     width: 260px;
     flex-shrink: 0;
@@ -204,7 +204,7 @@
     display: none;
 }
 
-/* --- 3.3 搜索与筛选 --- */
+/* --- 3.3 Search & Filter --- */
 .search-filter-container {
     margin-top: auto;
     display: flex;
@@ -266,7 +266,7 @@
     cursor: pointer;
 }
 
-/* --- 3.3.1 新增筛选区域 --- */
+/* --- 3.3.1 New Filter Area --- */
 .filter-area {
     display: flex;
     flex-direction: column;
@@ -325,7 +325,7 @@
     border: none; /* 移除单独的边框 */
 }
 
-/* --- 3.4 主要内容（看板） --- */
+/* --- 3.4 Main Content (Kanban Board) --- */
 .main-content {
     flex-grow: 1;
     padding: 24px;

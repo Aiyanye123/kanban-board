@@ -191,10 +191,140 @@
                     <option value="one-day-before-18">截止日前 1 天 18:00</option>
                 </select>
             </div>
+            <div class="form-group">
+                <label for="task-attachments">上传附件</label>
+                <div class="file-upload-area">
+                    <input type="file" id="task-attachments" name="attachments" multiple
+                           accept="image/*,.pdf,.doc,.docx,.txt,.xlsx,.pptx" style="display: none;">
+                    <button type="button" class="file-upload-btn" onclick="document.getElementById('task-attachments').click()">
+                        📎 选择文件
+                    </button>
+                    <div class="file-upload-info">支持图片、PDF、Word、Excel等文件，单个文件最大10MB</div>
+                    <div id="selected-files-preview" class="selected-files-preview"></div>
+                </div>
+            </div>
             <button type="submit" class="submit-btn" id="task-submit-btn">创建任务</button>
         </form>
     </dialog>
 
+    <!-- 快捷键帮助面板 -->
+    <div class="keyboard-help-overlay" id="keyboard-help-overlay">
+        <div class="keyboard-help-panel" id="keyboard-help-panel">
+            <h2 class="keyboard-help-title">键盘快捷键</h2>
+            <ul class="keyboard-shortcuts-list">
+                <li class="keyboard-shortcut-item">
+                    <span class="shortcut-description">新建任务（在当前选中列或Todo列）</span>
+                    <div class="shortcut-keys">
+                        <span class="shortcut-key">N</span>
+                    </div>
+                </li>
+                <li class="keyboard-shortcut-item">
+                    <span class="shortcut-description">编辑当前高亮的任务</span>
+                    <div class="shortcut-keys">
+                        <span class="key-separator">键盘选择并按下</span>
+                        <span class="shortcut-key">E</span>
+                    </div>
+                </li>
+                <li class="keyboard-shortcut-item">
+                    <span class="shortcut-description">删除当前高亮的任务</span>
+                    <div class="shortcut-keys">
+                        <span class="key-separator">键盘选择并按下</span>
+                        <span class="shortcut-key">Backspace</span>
+                    </div>
+                </li>
+                <li class="keyboard-shortcut-item">
+                    <span class="shortcut-description">跳转到搜索框</span>
+                    <div class="shortcut-keys">
+                        <span class="shortcut-key">F</span>
+                    </div>
+                </li>
+                <li class="keyboard-shortcut-item">
+                    <span class="shortcut-description">切换浅色/深色主题</span>
+                    <div class="shortcut-keys">
+                        <span class="shortcut-key">T</span>
+                    </div>
+                </li>
+                <li class="keyboard-shortcut-item">
+                    <span class="shortcut-description">在列之间左右切换</span>
+                    <div class="shortcut-keys">
+                        <span class="shortcut-key arrow">←</span>
+                        <span class="key-separator">/</span>
+                        <span class="shortcut-key arrow">→</span>
+                    </div>
+                </li>
+                <li class="keyboard-shortcut-item">
+                    <span class="shortcut-description">在当前列内上下切换任务</span>
+                    <div class="shortcut-keys">
+                        <span class="shortcut-key arrow">↑</span>
+                        <span class="key-separator">/</span>
+                        <span class="shortcut-key arrow">↓</span>
+                    </div>
+                </li>
+                <li class="keyboard-shortcut-item">
+                    <span class="shortcut-description">显示/隐藏此帮助面板</span>
+                    <div class="shortcut-keys">
+                        <span class="shortcut-key special">?</span>
+                    </div>
+                </li>
+            </ul>
+            <div class="keyboard-help-footer">
+                <div class="close-hint">按任意键或点击面板外关闭</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 任务详情模态框 -->
+    <dialog class="task-detail-modal" id="task-detail-modal">
+        <div class="task-detail-header">
+            <h2 class="task-detail-title" id="task-detail-title">任务详情</h2>
+            <button class="task-detail-close-btn" id="task-detail-close-btn" aria-label="关闭详情">&times;</button>
+        </div>
+        
+        <div class="task-detail-body">
+            <!-- 基本信息 -->
+            <div class="task-basic-info" id="task-basic-info">
+                <!-- 基本信息将由JS动态填充 -->
+            </div>
+            
+            <!-- 标签导航 -->
+            <div class="task-detail-tabs">
+                <button class="task-detail-tab active" data-tab="comments">评论 (0)</button>
+                <button class="task-detail-tab" data-tab="attachments">附件 (0)</button>
+            </div>
+            
+            <!-- 评论内容 -->
+            <div class="task-detail-content active" data-content="comments">
+                <div class="comments-container">
+                    <div class="comments-list" id="comments-list">
+                        <!-- 评论列表将由JS动态填充 -->
+                    </div>
+                    <div class="comment-input-area">
+                        <textarea id="comment-input" placeholder="输入评论内容..." rows="3"></textarea>
+                        <button id="comment-submit-btn" class="comment-submit-btn">发送</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 附件内容 -->
+            <div class="task-detail-content" data-content="attachments" >
+                <div class="attachments-container">
+                    <div class="attachments-header">
+                        <input type="file" id="attachment-file-input" multiple
+                               accept="image/*,.pdf,.doc,.docx,.txt,.xlsx,.pptx" style="display: none;">
+                        <button class="attachment-upload-btn" onclick="document.getElementById('attachment-file-input').click()">
+                            📎 上传附件
+                        </button>
+                    </div>
+                    <div class="attachments-list" id="attachments-list">
+                        <!-- 附件列表将由JS动态填充 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </dialog>
+
 <script src="app.js"></script>
+<script src="keyboard-shortcuts.js"></script>
+<script src="task-details.js"></script>
 </body>
 </html>

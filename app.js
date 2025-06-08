@@ -49,9 +49,9 @@
 
     // --- 2. 应用状态管理 ---
     let tasks = []; // 存储所有任务的核心数组
-    let labels = {}; // 存储所有标签及其颜色，例如 { "重要": "#ff0000" }
+    let labels = {}; // 存储所有标签和它们的颜色 e.g. { "重要": "#ff0000" }
     let draggedTaskId = null; // 当前拖拽的任务ID
-    let currentView = 'all'; // 可选值：'all'、'todo'、'in-progress'、'done'、'calendar'
+    let currentView = 'all'; // 'all', 'todo', 'in-progress', 'done', 'calendar'
     let isAnimating = false; // 防止动画期间重复点击
     let multiPanelMode = true; // 默认开启多面板模式
     let activeFilters = {
@@ -122,7 +122,7 @@
 
     /**
      * @description 保存当前视图状态到 localStorage
-     * @param {string} view - 'all', 'todo', 'in-progress' 或 'done'
+     * @param {string} view - 'all', 'todo', 'in-progress', or 'done'
      */
     function saveViewToStorage(view) {
         localStorage.setItem('kanban_view', view);
@@ -197,6 +197,7 @@
             <button class="task-card__menu-btn" aria-label="更多操作">⋮</button>
             <ul class="task-card__menu">
                 <li class="task-card__menu-item"><button class="edit-task-btn">编辑</button></li>
+                <li class="task-card__menu-item"><button class="view-details-btn">查看详情</button></li>
                 <li class="task-card__menu-item"><button class="view-subtasks-btn">查看子任务</button></li>
                 <li class="task-card__menu-item task-card__menu-item--delete"><button class="delete-task-btn">删除</button></li>
             </ul>
@@ -399,6 +400,9 @@
                 remindAt
             };
             tasks.push(newTask);
+            
+            // 处理附件上传
+            handleTaskAttachments(newTask.id);
         } else {
             const task = tasks.find(t => t.id === id);
             if (task) {
@@ -415,6 +419,9 @@
                 task.reminderType = reminderType;
                 task.remindAt = remindAt;
                 task.updatedAt = now;
+                
+                // 处理附件上传
+                handleTaskAttachments(task.id);
             }
         }
 
@@ -423,6 +430,101 @@
         renderBoard();
         renderLabelFilters(); // 更新侧边栏的标签筛选器
         closeModal();
+    }
+
+    /**
+     * @description 处理任务附件上传
+     * @param {string} taskId - 任务ID
+     */
+    function handleTaskAttachments(taskId) {
+        const fileInput = document.getElementById('task-attachments');
+        if (fileInput && fileInput.files.length > 0 && window.TaskDetails) {
+            // 确保IndexedDB已初始化后再保存附件
+            setTimeout(() => {
+                const uploadPromises = Array.from(fileInput.files).map(file => {
+                    if (file.size > 10 * 1024 * 1024) {
+                        alert(`文件 "${file.name}" 超过10MB限制`);
+                        return Promise.resolve(null);
+                    }
+                    return window.TaskDetails.saveAttachmentFromModal(taskId, file);
+                });
+
+                Promise.all(uploadPromises).then(results => {
+                    const successCount = results.filter(r => r !== null).length;
+                    if (successCount > 0) {
+                        console.log(`成功保存 ${successCount} 个附件到任务 ${taskId}`);
+                        // 显示成功提示
+                        showAttachmentSuccessMessage(successCount);
+                    }
+                }).catch(error => {
+                    console.error('附件保存失败:', error);
+                    alert('附件保存失败，请重试');
+                });
+            }, 100); // 延迟100ms确保IndexedDB已初始化
+
+            // 清空文件选择以便下次使用
+            fileInput.value = '';
+            updateFilePreview();
+        }
+    }
+
+    /**
+     * @description 显示附件保存成功消息
+     * @param {number} count - 成功保存的附件数量
+     */
+    function showAttachmentSuccessMessage(count) {
+        // 创建临时提示消息
+        const message = document.createElement('div');
+        message.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-weight: 500;
+            z-index: 10001;
+            animation: slideIn 0.3s ease;
+        `;
+        message.textContent = `成功保存 ${count} 个附件`;
+        document.body.appendChild(message);
+
+        // 3秒后自动移除
+        setTimeout(() => {
+            if (document.body.contains(message)) {
+                message.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => {
+                    if (document.body.contains(message)) {
+                        document.body.removeChild(message);
+                    }
+                }, 300);
+            }
+        }, 3000);
+    }
+
+    /**
+     * @description 更新文件预览
+     */
+    function updateFilePreview() {
+        const fileInput = document.getElementById('task-attachments');
+        const preview = document.getElementById('selected-files-preview');
+        
+        if (!fileInput || !preview) return;
+        
+        preview.innerHTML = '';
+        
+        if (fileInput.files.length > 0) {
+            Array.from(fileInput.files).forEach((file, index) => {
+                const fileItem = document.createElement('div');
+                fileItem.className = 'selected-file-item';
+                fileItem.innerHTML = `
+                    <span>${file.name}</span>
+                    <span class="selected-file-remove" data-index="${index}">×</span>
+                `;
+                preview.appendChild(fileItem);
+            });
+        }
     }
 
     /**
@@ -587,7 +689,7 @@ function deleteTask(taskId) {
         }
     }
 
-    // --- 6. 拖拽交互 ---
+    // --- 6. 拖拽交互 (Drag & Drop) ---
 
     function handleDragStart(e) {
         draggedTaskId = e.target.dataset.id;
@@ -634,11 +736,11 @@ function deleteTask(taskId) {
         }
     }
 
-    // --- 7. 子任务管理 ---
+    // --- 7. Subtask Management ---
 
     /**
-     * @description 切换子任务面板的显示状态
-     * @param {HTMLElement} cardElement - 所属的任务卡片元素
+     * @description Toggles the visibility of the subtask panel.
+     * @param {HTMLElement} cardElement - The parent task card element.
      */
     function toggleSubtaskPanel(cardElement) {
         const panel = cardElement.querySelector('.subtask-panel');
@@ -664,8 +766,8 @@ function deleteTask(taskId) {
     }
 
     /**
-     * @description 渲染指定任务卡片的所有子任务
-     * @param {HTMLElement} cardElement - 所属的任务卡片元素
+     * @description Renders the subtasks for a given task card.
+     * @param {HTMLElement} cardElement - The parent task card element.
      */
     function renderSubtasks(cardElement) {
         const taskId = cardElement.dataset.id;
@@ -673,7 +775,7 @@ function deleteTask(taskId) {
         if (!task || !task.subtasks) return;
 
         const subtaskListEl = cardElement.querySelector('.subtask-list');
-        subtaskListEl.innerHTML = ''; // 清空已有子任务
+        subtaskListEl.innerHTML = ''; // Clear existing subtasks
 
         task.subtasks.forEach(subtask => {
             const subtaskEl = createSubtaskElement(subtask);
@@ -682,9 +784,9 @@ function deleteTask(taskId) {
     }
 
     /**
-     * @description 创建单个子任务的 DOM 元素
-     * @param {object} subtask - 子任务对象
-     * @returns {HTMLElement} 创建好的子任务列表项元素
+     * @description Creates a DOM element for a single subtask.
+     * @param {object} subtask - The subtask object.
+     * @returns {HTMLElement} The created subtask list item element.
      */
     function createSubtaskElement(subtask) {
         const item = document.createElement('li');
@@ -704,9 +806,9 @@ function deleteTask(taskId) {
     }
 
     /**
-     * @description 向指定任务添加新的子任务
-     * @param {string} taskId - 父任务的ID
-     * @param {string} title - 新子任务的标题
+     * @description Adds a new subtask to a parent task.
+     * @param {string} taskId - The ID of the parent task.
+     * @param {string} title - The title of the new subtask.
      */
     function addSubtask(taskId, title) {
         const task = tasks.find(t => t.id === taskId);
@@ -714,16 +816,16 @@ function deleteTask(taskId) {
             const newSubtask = {
                 id: `subtask-${Date.now()}`,
                 title: title.trim(),
-                status: 'todo' // todo 或 done
+                status: 'todo' // 'todo' or 'done'
             };
             if (!task.subtasks) {
                 task.subtasks = [];
             }
             task.subtasks.push(newSubtask);
             saveTasksToStorage();
-            renderBoard(); // 重新渲染以更新进度条
+            renderBoard(); // Re-render to show progress bar update
             
-            // 重新渲染后定位卡片并重新展开面板
+            // After re-rendering, find the card and re-open the panel
             setTimeout(() => {
                 const cardElement = document.querySelector(`.task-card[data-id="${taskId}"]`);
                 if (cardElement) {
@@ -733,7 +835,7 @@ function deleteTask(taskId) {
                     } else {
                         renderSubtasks(cardElement);
                     }
-                    // 聚焦到新的子任务输入框
+                    // Focus the new subtask input
                     cardElement.querySelector('.add-subtask-input').focus();
                 }
             }, 0);
@@ -741,10 +843,10 @@ function deleteTask(taskId) {
     }
 
     /**
-     * @description 更新子任务（标题或状态）
-     * @param {string} taskId - 父任务的ID
-     * @param {string} subtaskId - 要更新的子任务ID
-     * @param {object} updates - 包含更新属性的对象
+     * @description Updates a subtask (title or status).
+     * @param {string} taskId - The ID of the parent task.
+     * @param {string} subtaskId - The ID of the subtask to update.
+     * @param {object} updates - An object with properties to update (e.g., { title, status }).
      */
     function updateSubtask(taskId, subtaskId, updates) {
         const task = tasks.find(t => t.id === taskId);
@@ -771,9 +873,9 @@ function deleteTask(taskId) {
     }
 
     /**
-     * @description 删除子任务
-     * @param {string} taskId - 父任务的ID
-     * @param {string} subtaskId - 要删除的子任务ID
+     * @description Deletes a subtask.
+     * @param {string} taskId - The ID of the parent task.
+     * @param {string} subtaskId - The ID of the subtask to delete.
      */
     function deleteSubtask(taskId, subtaskId) {
         const task = tasks.find(t => t.id === taskId);
@@ -796,7 +898,7 @@ function deleteTask(taskId) {
         }
     }
 
-    // 子任务拖拽排序
+    // Drag and drop for subtasks
     let draggedSubtaskInfo = null;
 
     function getDragAfterElement(container, y) {
@@ -991,7 +1093,7 @@ function deleteTask(taskId) {
 
         // 卡片菜单、编辑、删除、子任务 (事件委托)
         kanbanBoard.addEventListener('click', e => {
-            // --- 任务卡片操作 ---
+            // --- Main task card actions ---
             const menuBtn = e.target.closest('.task-card__menu-btn');
             if (menuBtn) {
                 document.querySelectorAll('.task-card__menu.show').forEach(menu => {
@@ -1015,7 +1117,16 @@ function deleteTask(taskId) {
                 return;
             }
 
-            // --- 子任务操作 ---
+            const viewDetailsBtn = e.target.closest('.view-details-btn');
+            if (viewDetailsBtn) {
+                const taskId = viewDetailsBtn.closest('.task-card').dataset.id;
+                if (window.TaskDetails) {
+                    window.TaskDetails.openTaskDetail(taskId);
+                }
+                return;
+            }
+
+            // --- Subtask actions ---
             const viewSubtasksBtn = e.target.closest('.view-subtasks-btn');
             if (viewSubtasksBtn) {
                 const card = viewSubtasksBtn.closest('.task-card');
@@ -1064,9 +1175,9 @@ function deleteTask(taskId) {
             }
         });
 
-        // --- 子任务专用监听（键盘、失焦、拖拽） ---
+        // --- Subtask specific listeners (for keydown, blur, drag) ---
         kanbanBoard.addEventListener('keydown', e => {
-            // 按回车键添加子任务
+            // Add subtask on Enter key
             if (e.key === 'Enter' && e.target.matches('.add-subtask-input')) {
                 e.preventDefault();
                 const card = e.target.closest('.task-card');
@@ -1076,15 +1187,15 @@ function deleteTask(taskId) {
                     e.target.value = '';
                 }
             }
-            // 按回车或空格切换子任务状态
+            // Toggle subtask status on Enter/Space key
             if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('.subtask-item__status')) {
                  e.preventDefault();
-                 e.target.click(); // 触发点击处理
+                 e.target.click(); // Trigger the click handler
             }
         });
 
         kanbanBoard.addEventListener('blur', e => {
-            // 失焦时保存子任务标题
+            // Save subtask title on blur
             if (e.target.matches('.subtask-item__title')) {
                 const subtaskItem = e.target.closest('.subtask-item');
                 const card = e.target.closest('.task-card');
@@ -1097,19 +1208,19 @@ function deleteTask(taskId) {
 
                 if (subtask && subtask.title !== newTitle) {
                     if (!newTitle) {
-                        // 若标题为空则恢复旧值
+                        // If title is empty, revert to old title
                         e.target.textContent = subtask.title;
                     } else {
                         updateSubtask(taskId, subtaskId, { title: newTitle });
                     }
                 }
             }
-        }, true); // 使用捕获阶段确保可靠获取 blur 事件
+        }, true); // Use capture phase to catch blur event reliably
 
-        // --- 子任务拖拽监听器 ---
+        // --- Subtask Drag and Drop Listeners ---
         kanbanBoard.addEventListener('dragstart', e => {
             if (e.target.matches('.subtask-item')) {
-                e.stopPropagation(); // 防止触发卡片拖拽
+                e.stopPropagation(); // Prevent card drag from firing
                 const card = e.target.closest('.task-card');
                 draggedSubtaskInfo = {
                     element: e.target,
@@ -1139,7 +1250,7 @@ function deleteTask(taskId) {
         kanbanBoard.addEventListener('drop', e => {
             if (draggedSubtaskInfo) {
                 e.preventDefault();
-                e.stopPropagation(); // 防止触发列拖放
+                e.stopPropagation(); // Prevent column drop from firing
                 
                 const { element, taskId } = draggedSubtaskInfo;
                 element.classList.remove('dragging');
@@ -1282,6 +1393,31 @@ function deleteTask(taskId) {
 
         // 提醒横幅事件监听器
         reminderBannerClose.addEventListener('click', hideReminderBanner);
+
+        // 文件上传预览事件监听器
+        const taskAttachmentsInput = document.getElementById('task-attachments');
+        if (taskAttachmentsInput) {
+            taskAttachmentsInput.addEventListener('change', updateFilePreview);
+        }
+
+        // 文件预览删除事件监听器
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('selected-file-remove')) {
+                const index = parseInt(e.target.dataset.index);
+                const fileInput = document.getElementById('task-attachments');
+                if (fileInput) {
+                    // 创建新的文件列表，排除被删除的文件
+                    const dt = new DataTransfer();
+                    Array.from(fileInput.files).forEach((file, i) => {
+                        if (i !== index) {
+                            dt.items.add(file);
+                        }
+                    });
+                    fileInput.files = dt.files;
+                    updateFilePreview();
+                }
+            }
+        });
     }
 
     // --- 10. 日历视图功能 ---
@@ -1884,4 +2020,8 @@ function deleteTask(taskId) {
 
     // 初始化导入导出功能
     addImportExportListeners();
+
+    // --- 暴露必要的函数到全局作用域，供键盘快捷键模块使用 ---
+    window.openModal = openModal;
+    window.deleteTask = deleteTask;
 })();
