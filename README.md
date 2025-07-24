@@ -6,6 +6,7 @@
 
 ![Kanban Board 截图](/assets/image2.png)
 
+![Kanban Board 截图](/assets/image3.png)
 ## 功能特点
 
 ### 核心功能
