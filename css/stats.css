@@ -1,0 +1,209 @@
+/* --- Stats Page Specific Styles --- */
+
+.stats-content {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.stats-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.stats-header h2 {
+    font-size: 28px;
+    color: var(--text-primary);
+}
+
+.stats-filter {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.stats-filter label {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.stats-filter select {
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    font-size: 14px;
+}
+
+.stats-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    flex-grow: 1;
+}
+
+.main-charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+    gap: 24px;
+}
+
+.stats-card {
+    background-color: var(--bg-secondary);
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 4px 12px var(--shadow-color);
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease;
+}
+
+.stats-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px var(--shadow-color);
+}
+
+.stats-card__title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 12px;
+}
+
+.chart-card {
+    grid-column: span 1;
+    min-height: 400px;
+}
+
+.chart-container {
+    flex-grow: 1;
+    position: relative;
+}
+
+/* New wrapper for summary and due tasks */
+.summary-and-due-grid {
+    grid-column: 1 / -1; /* Make it span full width */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+}
+
+.summary-card, .list-card {
+    /* These will now be direct children of summary-and-due-grid or stats-grid */
+}
+
+.summary-card .summary-metrics {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+    height: 100%;
+    gap: 20px;
+}
+
+.metric-item {
+    text-align: center;
+}
+
+.metric-label {
+    display: block;
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
+.metric-value {
+    display: block;
+    font-size: 32px;
+    font-weight: bold;
+    color: var(--accent-color);
+    transition: color 0.3s ease;
+}
+.metric-value:hover {
+    color: var(--accent-color-dark);
+}
+
+.list-card .due-tasks-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    overflow-y: auto;
+    max-height: 300px; /* Increased height */
+}
+
+.due-tasks-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 8px;
+    border-bottom: 1px solid var(--border-color-light);
+    transition: background-color 0.2s ease;
+}
+
+.due-tasks-list li:last-child {
+    border-bottom: none;
+}
+
+.due-tasks-list li:hover {
+    background-color: var(--bg-tertiary);
+}
+
+.due-task-title {
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.due-task-details {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.due-task-status {
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: bold;
+    color: white;
+}
+
+.status-todo { background-color: #5A95E5; }
+.status-in-progress { background-color: #F2C94C; }
+.status-done { background-color: #6FCF97; }
+
+.due-task-remaining.urgent {
+    color: var(--danger-color);
+    font-weight: bold;
+}
+
+.due-tasks-placeholder {
+    text-align: center;
+    padding: 40px 0;
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+/* Responsive adjustments for stats page */
+@media (max-width: 900px) {
+    .main-charts-grid {
+        grid-template-columns: 1fr; /* Stack cards on smaller screens */
+    }
+}
+
+@media (max-width: 768px) {
+    .stats-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+}
