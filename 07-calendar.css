@@ -1,0 +1,156 @@
+/* --- 8. 日历视图样式 --- */
+.calendar-view {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding: 0 16px;
+}
+
+.calendar-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--text-primary);
+}
+
+.calendar-nav-btn {
+    padding: 8px 16px;
+    background-color: var(--accent-color);
+    color: white;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.calendar-nav-btn:hover {
+    background-color: var(--accent-color-hover);
+}
+
+.calendar-grid {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: var(--bg-secondary);
+}
+
+.calendar-weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    background-color: var(--bg-tertiary);
+}
+
+.calendar-weekday {
+    padding: 12px;
+    text-align: center;
+    font-weight: bold;
+    color: var(--text-secondary);
+    border-right: 1px solid var(--border-color);
+}
+
+.calendar-weekday:last-child {
+    border-right: none;
+}
+
+.calendar-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: repeat(6, 1fr);
+    flex-grow: 1;
+}
+
+.calendar-day {
+    border-right: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+    padding: 8px;
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.calendar-day:hover {
+    background-color: var(--bg-tertiary);
+}
+
+.calendar-day:nth-child(7n) {
+    border-right: none;
+}
+
+.calendar-day.other-month {
+    color: var(--text-secondary);
+    background-color: var(--bg-primary);
+}
+
+.calendar-day.today {
+    background-color: var(--highlight-bg);
+    border: 2px solid var(--accent-color);
+}
+
+.calendar-day-number {
+    font-weight: bold;
+    margin-bottom: 4px;
+    font-size: 14px;
+}
+
+.calendar-tasks {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.calendar-task-item {
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.calendar-task-item:hover {
+    transform: scale(1.05);
+}
+
+.calendar-task-item.status-todo {
+    background-color: var(--column-bg-todo);
+}
+
+.calendar-task-item.status-in-progress {
+    background-color: var(--column-bg-inprogress);
+}
+
+.calendar-task-item.status-done {
+    background-color: var(--column-bg-done);
+}
+
+.calendar-more-tasks {
+    padding: 2px 6px;
+    background-color: var(--text-secondary);
+    color: white;
+    border-radius: 4px;
+    font-size: 11px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.calendar-more-tasks:hover {
+    background-color: var(--accent-color);
+}
