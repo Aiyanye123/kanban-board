@@ -1,0 +1,242 @@
+/* --- 5. 模态框 --- */
+.task-modal {
+    max-width: 480px;
+    width: 90%;
+    padding: 32px;
+    border-radius: 8px;
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    border: none;
+    box-shadow: 0 5px 15px var(--shadow-color);
+    inset: 0; /* 顶、右、底、左都为 0，相当于占满屏幕 */
+    margin: auto; /* 自动填充剩余空间，从而居中 */
+}
+.task-modal::backdrop {
+    background: var(--modal-overlay-bg);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+.task-modal[open] {
+    animation: modal-fade-in 0.3s ease forwards;
+}
+.task-modal[open]::backdrop {
+    opacity: 1;
+}
+@keyframes modal-fade-in {
+    from { transform: translateY(-50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+.modal-title {
+    font-size: 18px;
+    font-weight: bold;
+}
+.modal-close-btn {
+    font-size: 24px;
+    color: var(--text-secondary);
+}
+
+.form-group {
+    margin-bottom: 24px;
+}
+.form-group label {
+    display: block;
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+.form-group input, .form-group textarea {
+    width: 100%;
+    padding: 8px 12px;
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+    background-color: transparent;
+    color: var(--text-primary);
+    font-family: inherit;
+}
+.form-group input:focus, .form-group textarea:focus {
+    outline: none;
+    border-color: var(--accent-color);
+}
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+.form-group .error-message {
+    color: var(--danger-color);
+    font-size: 12px;
+    margin-top: 4px;
+    display: none;
+}
+.form-group.invalid input, .form-group.invalid textarea {
+    border-color: var(--danger-color);
+}
+.form-group.invalid .error-message {
+    display: block;
+}
+
+.label-suggestions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+}
+
+.label-suggestion-item {
+    padding: 4px 8px;
+    font-size: 12px;
+    background-color: var(--bg-tertiary);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.label-suggestion-item:hover {
+    background-color: var(--accent-color-hover);
+    color: white;
+}
+
+.label-suggestion-item-wrapper {
+    display: flex;
+    align-items: center;
+    background-color: var(--bg-tertiary);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.label-suggestion-item {
+    background-color: transparent;
+}
+
+.label-delete-btn {
+    padding: 0 8px;
+    font-size: 16px;
+    line-height: 1;
+    color: var(--text-secondary);
+    background-color: transparent;
+    transition: color 0.2s, background-color 0.2s;
+}
+
+.label-delete-btn:hover {
+    color: white;
+    background-color: var(--danger-color);
+}
+
+/* --- 10. 任务详情模态框样式 --- */
+.task-detail-modal, .day-tasks-modal {
+    max-width: 500px;
+    width: 90%;
+    padding: 32px;
+    border-radius: 8px;
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    border: none;
+    box-shadow: 0 5px 15px var(--shadow-color);
+    inset: 0;
+    margin: auto;
+}
+
+.task-detail-modal::backdrop, .day-tasks-modal::backdrop {
+    background: var(--modal-overlay-bg);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.task-detail-modal[open], .day-tasks-modal[open] {
+    animation: modal-fade-in 0.3s ease forwards;
+}
+
+.task-detail-modal[open]::backdrop, .day-tasks-modal[open]::backdrop {
+    opacity: 1;
+}
+
+.task-detail-content {
+    margin-bottom: 24px;
+}
+
+.task-detail-item {
+    margin-bottom: 16px;
+}
+
+.task-detail-label {
+    font-weight: bold;
+    color: var(--text-secondary);
+    font-size: 12px;
+    margin-bottom: 4px;
+}
+
+.task-detail-value {
+    font-size: 14px;
+    color: var(--text-primary);
+}
+
+.task-detail-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.btn {
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary {
+    background-color: var(--accent-color);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: var(--accent-color-hover);
+}
+
+.day-tasks-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.day-task-item {
+    padding: 12px;
+    background-color: var(--bg-primary);
+    border-radius: 6px;
+    border-left: 4px solid var(--accent-color);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.day-task-item:hover {
+    background-color: var(--bg-tertiary);
+}
+
+.day-task-item.status-todo {
+    border-left-color: var(--column-bg-todo);
+}
+
+.day-task-item.status-in-progress {
+    border-left-color: var(--column-bg-inprogress);
+}
+
+.day-task-item.status-done {
+    border-left-color: var(--column-bg-done);
+}
+
+.day-task-title {
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+.day-task-status {
+    font-size: 12px;
+    color: var(--text-secondary);
+}

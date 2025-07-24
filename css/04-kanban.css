@@ -1,0 +1,120 @@
+/* --- 4. 看板管理 --- */
+.kanban-board {
+    display: flex;
+    gap: 24px;
+    height: 100%;
+    transition: gap 0.3s ease;
+}
+
+.kanban-board.zoomed-in {
+    gap: 0;
+}
+
+.kanban-column {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    flex: 1 1 0; /* flex-grow, flex-shrink, flex-basis */
+    min-width: 0; /* 关键：防止内容把列撑开 */
+    transition: all 0.4s ease;
+    opacity: 1;
+    visibility: visible;
+}
+
+.kanban-column.is-hidden {
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-basis: 0;
+    opacity: 0;
+    visibility: hidden;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+}
+
+.kanban-board.zoomed-in .kanban-column.is-zoomed {
+    flex-grow: 1;
+    flex-basis: 100%;
+}
+.kanban-column.drag-over {
+    background-color: var(--highlight-bg);
+    border-radius: 8px;
+}
+
+.kanban-column__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.kanban-column__title {
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 2.4px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.kanban-column__title::before {
+    content: '';
+    display: block;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+}
+#column-todo .kanban-column__title::before { background-color: var(--column-bg-todo); }
+#column-in-progress .kanban-column__title::before { background-color: var(--column-bg-inprogress); }
+#column-done .kanban-column__title::before { background-color: var(--column-bg-done); }
+
+.add-task-btn {
+    font-size: 24px;
+    line-height: 1;
+    color: var(--accent-color);
+    padding: 4px;
+    border-radius: 50%;
+}
+.add-task-btn:hover {
+    background-color: var(--bg-tertiary);
+}
+
+.kanban-column__cards {
+    flex-grow: 1;
+    overflow-y: auto; /* 列内垂直滚动 */
+    padding-right: 8px; /* 滚动条空间 */
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+/* 自定义滚动条样式 */
+.kanban-column__cards::-webkit-scrollbar {
+    width: 8px;
+}
+.kanban-column__cards::-webkit-scrollbar-track {
+    background: var(--bg-tertiary);
+    border-radius: 4px;
+}
+.kanban-column__cards::-webkit-scrollbar-thumb {
+    background: var(--accent-color-hover);
+    border-radius: 4px;
+}
+.kanban-column__cards::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-color);
+}
+
+
+/* 按钮动画效果 */
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+  40% {transform: translateY(-10px);}
+  60% {transform: translateY(-5px);}
+}
+
+.multi-panel-toggle.active {
+  background-color: var(--column-bg-inprogress);
+  animation: bounce 0.6s ease;
+}
