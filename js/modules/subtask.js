@@ -65,6 +65,7 @@ export function toggleSubtaskPanel(cardElement) {
     } else {
         panel.classList.add('show');
         renderSubtasks(cardElement);
+        setTimeout(() => panel.querySelector('.add-subtask-input').focus(), 0);
     }
 }
 
