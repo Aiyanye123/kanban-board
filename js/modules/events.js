@@ -213,6 +213,9 @@ export function addEventListeners() {
 
     // 全局点击关闭菜单
     document.addEventListener('click', e => {
+        if (e.target.closest('.subtask-panel')) {
+            return;
+        }
         if (!e.target.closest('.task-card__menu-btn')) {
             document.querySelectorAll('.task-card__menu.show').forEach(menu => {
                 menu.classList.remove('show');
