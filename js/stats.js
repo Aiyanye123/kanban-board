@@ -1,18 +1,14 @@
-(function() {
+window.StatsModule = (function() {
     'use strict';
 
-    // --- 1. DOM Element Selection ---
-    const timeRangeFilter = document.getElementById('time-range-filter');
-    const completionRateEl = document.getElementById('completion-rate');
-    const avgCompletionTimeEl = document.getElementById('avg-completion-time');
-    const dueTasksListEl = document.getElementById('due-tasks-list');
-    const trendChartCanvas = document.getElementById('task-trend-chart');
-    const labelChartCanvas = document.getElementById('label-distribution-chart');
+    // --- 1. DOM Element Selection (deferred to init) ---
+    let timeRangeFilter, completionRateEl, avgCompletionTimeEl, dueTasksListEl, trendChartCanvas, labelChartCanvas;
 
     // --- 2. State Management ---
     let allTasks = [];
     let trendChart = null;
     let labelChart = null;
+    let isInitialized = false;
 
     // --- 3. Data Handling ---
 
@@ -322,9 +318,27 @@
      * Initializes the application.
      */
     function init() {
-        allTasks = loadTasks();
+        if (isInitialized) {
+            // On subsequent calls, just refresh the data as it might have changed
+            allTasks = loadTasks();
+            updateAllStats();
+            return;
+        }
         
-        // Initial render
+        // First-time setup
+        timeRangeFilter = document.getElementById('time-range-filter');
+        completionRateEl = document.getElementById('completion-rate');
+        avgCompletionTimeEl = document.getElementById('avg-completion-time');
+        dueTasksListEl = document.getElementById('due-tasks-list');
+        trendChartCanvas = document.getElementById('task-trend-chart');
+        labelChartCanvas = document.getElementById('label-distribution-chart');
+
+        if (!timeRangeFilter || !trendChartCanvas || !labelChartCanvas) {
+            console.error("Stats view elements not found. Initialization aborted.");
+            return;
+        }
+
+        allTasks = loadTasks();
         updateAllStats();
 
         // Add event listeners
@@ -332,18 +346,24 @@
 
         // Add theme change listener to redraw charts with new colors
         const themeSwitcher = document.getElementById('theme-switcher');
-        if(themeSwitcher) {
+        if (themeSwitcher) {
             new MutationObserver(() => {
-                if(trendChart) trendChart.destroy();
-                if(labelChart) labelChart.destroy();
-                trendChart = null;
-                labelChart = null;
-                updateAllStats();
+                // Check if the stats view is actually visible before destroying/redrawing charts
+                if (trendChartCanvas && trendChartCanvas.offsetParent !== null) {
+                    if (trendChart) trendChart.destroy();
+                    if (labelChart) labelChart.destroy();
+                    trendChart = null;
+                    labelChart = null;
+                    updateAllStats();
+                }
             }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
         }
+        
+        isInitialized = true;
     }
 
-    // --- 8. Application Start ---
-    document.addEventListener('DOMContentLoaded', init);
-
+    // --- 8. Public Interface ---
+    return {
+        init: init
+    };
 })();
