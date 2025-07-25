@@ -342,3 +342,35 @@
     border-radius: 4px;
 }
 .task-modal:focus-visible { outline: none; } /* dialog自带轮廓 */
+
+.task-card__menu-item--move {
+    position: relative;
+}
+
+.task-card__submenu {
+    display: none;
+    position: absolute;
+    right: 100%;
+    top: -8px;
+    background-color: var(--bg-secondary);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px var(--shadow-color);
+    padding: 8px;
+    z-index: 11;
+    list-style: none;
+    width: max-content;
+}
+
+.task-card__menu-item--move:hover > .task-card__submenu {
+    display: block;
+}
+
+.task-card__submenu-item button {
+    width: 100%;
+    text-align: left;
+    padding: 8px 12px;
+    border-radius: 4px;
+}
+.task-card__submenu-item button:hover {
+    background-color: var(--bg-tertiary);
+}

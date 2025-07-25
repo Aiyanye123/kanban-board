@@ -118,3 +118,11 @@
   background-color: var(--column-bg-inprogress);
   animation: bounce 0.6s ease;
 }
+
+.kanban-column.menu-is-open {
+    overflow: visible;
+}
+
+.kanban-column.menu-is-open .kanban-column__cards {
+    overflow: visible;
+}
