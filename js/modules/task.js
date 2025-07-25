@@ -30,3 +30,17 @@ export function deleteTask(taskId) {
         renderBoard();
     }
 }
+
+/**
+ * @description 移动任务到新的状态
+ * @param {string} taskId - 要移动的任务ID
+ * @param {string} newStatus - 新的状态
+ */
+export function moveTask(taskId, newStatus) {
+    const task = state.tasks.find(t => t.id === taskId);
+    if (task) {
+        task.status = newStatus;
+        saveTasksToStorage();
+        renderBoard();
+    }
+}

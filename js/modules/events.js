@@ -3,7 +3,7 @@ import state from './state.js';
 import { saveThemeToStorage } from './storage.js';
 import { setView } from './view.js';
 import { openModal, closeModal, handleFormSubmit } from './modal.js';
-import { deleteTask } from './task.js';
+import { deleteTask, moveTask } from './task.js';
 import { deleteLabel } from './label.js';
 import { handleDrop, handleDragOver, handleDragLeave } from './drag-drop.js';
 import { toggleSubtaskPanel, addSubtask, updateSubtask, deleteSubtask, getDragAfterElement } from './subtask.js';
@@ -60,10 +60,20 @@ export function addEventListeners() {
     DOM.kanbanBoard.addEventListener('click', e => {
         const menuBtn = e.target.closest('.task-card__menu-btn');
         if (menuBtn) {
-            document.querySelectorAll('.task-card__menu.show').forEach(menu => {
-                if (menu !== menuBtn.nextElementSibling) menu.classList.remove('show');
+            const menu = menuBtn.nextElementSibling;
+            const wasOpen = menu.classList.contains('show');
+
+            // Close all menus first
+            document.querySelectorAll('.task-card__menu.show').forEach(m => {
+                m.classList.remove('show');
+                m.closest('.kanban-column').classList.remove('menu-is-open');
             });
-            menuBtn.nextElementSibling.classList.toggle('show');
+
+            // If the menu was not open, open it
+            if (!wasOpen) {
+                menu.classList.add('show');
+                menu.closest('.kanban-column').classList.add('menu-is-open');
+            }
             return;
         }
 
@@ -81,6 +91,12 @@ export function addEventListeners() {
         }
         if (e.target.closest('.view-subtasks-btn')) {
             toggleSubtaskPanel(e.target.closest('.task-card'));
+            return;
+        }
+        if (e.target.closest('.move-task-btn')) {
+            const card = e.target.closest('.task-card');
+            const newStatus = e.target.dataset.status;
+            moveTask(card.dataset.id, newStatus);
             return;
         }
         if (e.target.closest('.add-subtask-btn')) {
@@ -198,7 +214,10 @@ export function addEventListeners() {
     // 全局点击关闭菜单
     document.addEventListener('click', e => {
         if (!e.target.closest('.task-card__menu-btn')) {
-            document.querySelectorAll('.task-card__menu.show').forEach(menu => menu.classList.remove('show'));
+            document.querySelectorAll('.task-card__menu.show').forEach(menu => {
+                menu.classList.remove('show');
+                menu.closest('.kanban-column').classList.remove('menu-is-open');
+            });
         }
         if (!DOM.filterDropdown.contains(e.target) && e.target !== DOM.filterBtn) {
             DOM.filterDropdown.classList.remove('show');

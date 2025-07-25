@@ -58,6 +58,16 @@ export function createTaskCardElement(task) {
         `<span class="task-card__label" style="background-color: ${state.labels[label] || '#cccccc'}">${label}</span>`
     ).join('');
 
+    const statuses = {
+        'todo': '待办事项',
+        'in-progress': '进行中',
+        'done': '已完成'
+    };
+    const otherStatuses = Object.keys(statuses).filter(s => s !== task.status);
+    const moveOptionsHTML = otherStatuses.map(s =>
+        `<li class="task-card__submenu-item"><button class="move-task-btn" data-status="${s}">${statuses[s]}</button></li>`
+    ).join('');
+
     card.innerHTML = `
         ${(task.labels && task.labels.length > 0) ? `<div class="task-card__labels">${labelsHTML}</div>` : ''}
         <div class="task-card__header">
@@ -83,6 +93,12 @@ export function createTaskCardElement(task) {
             <li class="task-card__menu-item"><button class="edit-task-btn">编辑</button></li>
             <li class="task-card__menu-item"><button class="view-details-btn">查看详情</button></li>
             <li class="task-card__menu-item"><button class="view-subtasks-btn">查看子任务</button></li>
+            <li class="task-card__menu-item task-card__menu-item--move">
+                <button>移动</button>
+                <ul class="task-card__submenu">
+                    ${moveOptionsHTML}
+                </ul>
+            </li>
             <li class="task-card__menu-item task-card__menu-item--delete"><button class="delete-task-btn">删除</button></li>
         </ul>
 
