@@ -1,38 +1,86 @@
 /* --- 响应式 --- */
 /* 移动端 (≤ 768px) */
 @media (max-width: 768px) {
+    .app-header {
+        padding: 8px 12px;
+        flex-wrap: wrap;
+        height: auto;
+    }
+    .app-header__title {
+        font-size: 18px;
+        margin-bottom: 8px;
+        width: 100%;
+        text-align: center;
+    }
+    .app-header__actions {
+        justify-content: center;
+        width: 100%;
+    }
+    .app-header__actions .theme-switcher,
+    .app-header__actions .multi-panel-toggle {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+
     .app-container {
         flex-direction: column;
-        height: auto;
+        height: 100vh; /* 确保容器占满屏幕高度 */
     }
     .app-nav {
         width: 100%;
         border-right: none;
         border-bottom: 1px solid var(--border-color);
-        flex-direction: row;
-        align-items: center;
-        padding: 12px;
+        flex-direction: column; /* 改为垂直布局以容纳所有按钮 */
+        align-items: stretch; /* 按钮宽度撑满 */
+        padding: 8px;
         height: auto;
+        flex-shrink: 0;
     }
     .app-nav.collapsed {
         width: 100%;
-        padding: 12px;
+        padding: 8px;
     }
     .app-nav .nav-toggle {
-        margin-bottom: 0;
+        display: none; /* 在移动端隐藏折叠按钮，因为导航栏始终可见 */
     }
-    .app-nav .nav__title, .app-nav .nav__list, .search-filter-container {
-        display: none; /* 在移动端默认隐藏导航内容 */
+    .app-nav .nav__title, .app-nav .search-filter-container, .app-nav .import-export-buttons {
+        display: none; /* 隐藏标题、搜索和导入/导出 */
+    }
+    .app-nav .nav__view-buttons {
+        display: flex;
+        flex-direction: row; /* 水平排列 */
+        overflow-x: auto; /* 允许水平滚动 */
+        -webkit-overflow-scrolling: touch; /* 在iOS上提供平滑滚动 */
+        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none;  /* IE 10+ */
+        padding-bottom: 8px; /* 为滚动条留出空间 */
+    }
+    .app-nav .nav__view-buttons::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Opera */
+    }
+    .app-nav .nav__view-btn {
+        flex: 0 0 auto; /* 防止按钮被压缩 */
+        margin-right: 8px;
+        padding: 8px 12px;
+        font-size: 14px;
+        white-space: nowrap; /* 防止文字换行 */
     }
 
     .main-content {
-        overflow-x: hidden;
-        padding: 16px;
+        overflow-y: auto; /* 主内容区可以滚动 */
+        flex-grow: 1;
+        padding: 12px;
     }
     .kanban-board {
         grid-auto-flow: row;
         grid-template-columns: 1fr; /* 垂直堆叠 */
-        gap: 32px;
+        gap: 24px;
+    }
+    .kanban-column__header {
+        padding: 8px 12px;
+    }
+    .kanban-column__title {
+        font-size: 16px;
     }
     .kanban-column__cards {
         height: auto; /* 自动高度 */
