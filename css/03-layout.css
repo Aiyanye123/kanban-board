@@ -114,6 +114,7 @@
     display: flex;
     flex-direction: column;
     transition: width 0.3s ease, padding 0.3s ease, transform 0.3s ease;
+    overflow-y: auto;
 }
 .app-nav.collapsed {
     width: 60px;
@@ -198,15 +199,24 @@
     margin: 0 auto;
     border-radius: 8px;
     width: 48px;
-    height: 48px;
+    height: auto;
+    padding: 12px 4px;
+    writing-mode: vertical-lr;
+    text-orientation: mixed;
+    letter-spacing: 4px;
 }
 .app-nav.collapsed .nav__view-btn .nav__list-text {
     display: none;
 }
 
+.import-export-buttons {
+    text-align: center;
+    margin-top: 20px;
+    padding-bottom: 24px; /* Add padding at the bottom */
+}
+
 /* --- 3.3 Search & Filter --- */
 .search-filter-container {
-    margin-top: auto;
     display: flex;
     flex-direction: column;
     gap: 16px;
@@ -333,4 +343,3 @@
     overflow-y: hidden;
     background-color: var(--bg-primary);
 }
-
