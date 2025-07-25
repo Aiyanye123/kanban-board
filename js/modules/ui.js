@@ -115,8 +115,12 @@ export function createTaskCardElement(task) {
     card.addEventListener('dragstart', handleDragStart);
     card.addEventListener('dragend', handleDragEnd);
     
+    // Stop propagation for clicks inside the subtask panel
+    const subtaskPanel = card.querySelector('.subtask-panel');
+    subtaskPanel.addEventListener('click', e => e.stopPropagation());
+
     card.addEventListener('click', (e) => {
-        if (e.target.closest('button') || e.target.closest('.subtask-panel')) return;
+        if (e.target.closest('button')) return;
         toggleSubtaskPanel(card);
     });
 
