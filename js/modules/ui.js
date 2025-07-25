@@ -115,13 +115,16 @@ export function createTaskCardElement(task) {
     card.addEventListener('dragstart', handleDragStart);
     card.addEventListener('dragend', handleDragEnd);
     
-    // Stop propagation for clicks inside the subtask panel
-    const subtaskPanel = card.querySelector('.subtask-panel');
-    subtaskPanel.addEventListener('click', e => e.stopPropagation());
-
     card.addEventListener('click', (e) => {
-        if (e.target.closest('button')) return;
-        toggleSubtaskPanel(card);
+        // 如果点击的是按钮，则让 events.js 中的委托监听器处理
+        if (e.target.closest('button')) {
+            return;
+        }
+
+        // 如果点击发生在子任务面板之外，则切换面板
+        if (!e.target.closest('.subtask-panel')) {
+            toggleSubtaskPanel(card);
+        }
     });
 
     return card;
