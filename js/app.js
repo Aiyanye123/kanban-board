@@ -2023,9 +2023,6 @@ function deleteTask(taskId) {
         addImportExportListeners();
     }
 
-    // 初始化导入导出功能
-    addImportExportListeners();
-
     // --- 暴露必要的函数到全局作用域，供键盘快捷键模块使用 ---
     window.openModal = openModal;
     window.deleteTask = deleteTask;
