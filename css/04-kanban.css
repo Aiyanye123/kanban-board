@@ -3,7 +3,7 @@
     display: flex;
     gap: 24px;
     height: 100%;
-    transition: gap 0.3s ease;
+    transition: gap var(--duration) var(--easing);
 }
 
 .kanban-board.zoomed-in {
@@ -16,7 +16,7 @@
     gap: 20px;
     flex: 1 1 0; /* flex-grow, flex-shrink, flex-basis */
     min-width: 0; /* 关键：防止内容把列撑开 */
-    transition: all 0.4s ease;
+    transition: opacity var(--duration) var(--easing), transform var(--duration) var(--easing), flex-basis var(--duration) var(--easing), padding var(--duration) var(--easing), margin var(--duration) var(--easing);
     opacity: 1;
     visibility: visible;
 }
@@ -30,6 +30,7 @@
     padding: 0;
     margin: 0;
     overflow: hidden;
+    transform: translateY(6px) scale(0.98);
 }
 
 .kanban-board.zoomed-in .kanban-column.is-zoomed {
@@ -39,6 +40,7 @@
 .kanban-column.drag-over {
     background-color: var(--highlight-bg);
     border-radius: 8px;
+    transition: background-color var(--duration-fast) var(--easing);
 }
 
 .kanban-column__header {
@@ -80,6 +82,14 @@
 }
 .add-task-btn:hover {
     background-color: var(--bg-tertiary);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+    transition: background-color var(--duration) var(--easing), box-shadow var(--duration) var(--easing), transform var(--duration) var(--easing);
+}
+
+/* 列显示/切换的细微过渡（更流畅） */
+.kanban-board.zoomed-in .kanban-column.is-zoomed {
+    transition: flex-basis var(--duration-slow) var(--easing-emphasis), transform var(--duration) var(--easing);
 }
 
 .kanban-column__cards {
@@ -126,3 +136,17 @@
 .kanban-column.menu-is-open .kanban-column__cards {
     overflow: visible;
 }
+
+/* --- 商用级布局覆盖（更合理的列宽/间距） --- */
+.kanban-board { gap: var(--gutter); justify-content: flex-start; }
+.kanban-column { gap: 16px; flex: 0 0 var(--kanban-column-width); }
+.kanban-column__header { padding: 2px 2px; }
+.kanban-column__cards { padding-top: 6px; gap: 16px; }
+
+/* 计数徽标样式，可用于列标题右侧 */
+.kanban-count-badge { padding: 4px 8px; border-radius: 999px; font-size: 11px; font-weight: 700; background: var(--bg-tertiary); color: var(--text-secondary); }
+
+/* 响应式列宽优化 */
+@media (max-width: 1400px) { :root { --kanban-column-width: 360px; } }
+@media (max-width: 1200px) { :root { --kanban-column-width: 340px; } }
+@media (max-width: 1024px) { :root { --kanban-column-width: 320px; } }

@@ -8,7 +8,7 @@
     color: white;
     padding: 12px 24px;
     z-index: 1000;
-    animation: slide-down-banner 0.3s ease-out;
+    animation: slide-down-banner var(--duration) var(--easing);
 }
 
 @keyframes slide-down-banner {
@@ -40,7 +40,7 @@
     cursor: pointer;
     padding: 0 8px;
     border-radius: 4px;
-    transition: background-color 0.2s ease;
+    transition: background-color var(--duration-fast) var(--easing);
 }
 
 .reminder-banner__close:hover {
@@ -53,10 +53,13 @@
     padding: 12px;
     background-color: var(--accent-color);
     color: white;
-    border-radius: 20px;
+    border-radius: var(--radius-l);
     font-weight: bold;
-    transition: background-color 0.3s ease;
+    box-shadow: var(--shadow-sm);
+    transition: background-color var(--duration) var(--easing), box-shadow var(--duration) var(--easing), transform var(--duration) var(--easing);
 }
 .submit-btn:hover {
     background-color: var(--accent-color-hover);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
 }

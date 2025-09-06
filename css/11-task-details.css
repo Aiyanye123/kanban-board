@@ -3,29 +3,34 @@
 /* 文件上传区域样式 */
 .file-upload-area {
     border: 2px dashed var(--border-color);
-    border-radius: 8px;
-    padding: 16px;
+    border-radius: var(--radius-l);
+    padding: 18px;
     text-align: center;
-    transition: border-color 0.3s ease;
+    background-color: var(--bg-primary);
+    transition: border-color var(--duration) var(--easing), background-color var(--duration) var(--easing), box-shadow var(--duration) var(--easing), transform var(--duration) var(--easing);
 }
 
 .file-upload-area:hover {
     border-color: var(--accent-color);
+    background-color: var(--bg-secondary);
+    box-shadow: 0 0 0 3px rgba(var(--accent-color-rgb), 0.12);
 }
 
 .file-upload-btn {
     background-color: var(--accent-color);
     color: white;
-    padding: 8px 16px;
-    border-radius: 6px;
-    font-weight: bold;
+    padding: 10px 16px;
+    border-radius: var(--radius-m);
+    font-weight: 700;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color var(--duration) var(--easing), box-shadow var(--duration) var(--easing), transform var(--duration) var(--easing);
     margin-bottom: 8px;
 }
 
 .file-upload-btn:hover {
     background-color: var(--accent-color-hover);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
 }
 
 .file-upload-info {
@@ -43,12 +48,12 @@
 
 .selected-file-item {
     background-color: var(--bg-tertiary);
-    padding: 4px 8px;
-    border-radius: 4px;
+    padding: 6px 10px;
+    border-radius: var(--radius-m);
     font-size: 12px;
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 6px;
 }
 
 .selected-file-remove {
@@ -63,11 +68,11 @@
     width: 90%;
     max-height: 80vh;
     padding: 0;
-    border-radius: 12px;
+    border-radius: var(--radius-l);
     background-color: var(--bg-secondary);
     color: var(--text-primary);
     border: none;
-    box-shadow: 0 10px 30px var(--shadow-color);
+    box-shadow: var(--shadow-md);
     inset: 0;
     margin: auto;
     overflow: hidden;
@@ -81,7 +86,7 @@
 }
 
 .task-detail-modal[open] {
-    animation: modal-fade-in 0.3s ease forwards;
+    animation: modal-in var(--duration-slow) var(--easing-emphasis) forwards;
 }
 
 .task-detail-modal[open]::backdrop {
@@ -126,7 +131,7 @@
     margin-bottom: 24px;
     padding: 16px;
     background-color: var(--bg-primary);
-    border-radius: 8px;
+    border-radius: var(--radius-m);
 }
 
 .task-info-item {
@@ -203,9 +208,17 @@
 .comment-item {
     background-color: var(--bg-primary);
     padding: 12px;
-    border-radius: 8px;
+    border-radius: var(--radius-m);
     margin-bottom: 12px;
     position: relative;
+    transition: transform var(--duration) var(--easing), box-shadow var(--duration) var(--easing);
+}
+.comment-item:hover { transform: translateY(-1px); box-shadow: var(--shadow-sm); }
+
+/* Keyframes used for smoother modal entrance */
+@keyframes modal-in {
+    from { transform: translateY(6px) scale(0.98); opacity: 0; }
+    to { transform: translateY(0) scale(1); opacity: 1; }
 }
 
 .comment-header {

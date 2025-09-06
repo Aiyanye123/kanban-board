@@ -177,9 +177,9 @@
     color: white;
 }
 
-.status-todo { background-color: #5A95E5; }
-.status-in-progress { background-color: #F2C94C; }
-.status-done { background-color: #6FCF97; }
+.status-todo { background-color: #94A3B8; }       /* Slate */
+.status-in-progress { background-color: #F59E0B; }/* Amber */
+.status-done { background-color: #10B981; }       /* Emerald */
 
 .due-task-remaining.urgent {
     color: var(--danger-color);

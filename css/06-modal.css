@@ -219,6 +219,35 @@
     background-color: var(--bg-tertiary);
 }
 
+/* --- 简约现代：覆盖与增强（Modal & Buttons） --- */
+.task-modal,
+.task-detail-modal,
+.day-tasks-modal {
+    border-radius: var(--radius-l);
+    box-shadow: var(--shadow-md);
+}
+
+.task-modal[open],
+.task-detail-modal[open],
+.day-tasks-modal[open] {
+    animation: modal-in var(--duration-slow) var(--easing-emphasis) forwards !important;
+}
+
+@keyframes modal-in {
+    from { transform: translateY(6px) scale(0.98); opacity: 0; }
+    to { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+.btn {
+    border-radius: var(--radius-m);
+    transition: background-color var(--duration) var(--easing), box-shadow var(--duration) var(--easing), transform var(--duration) var(--easing);
+}
+
+.btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+}
+
 .day-task-item.status-todo {
     border-left-color: var(--column-bg-todo);
 }
@@ -230,6 +259,48 @@
 .day-task-item.status-done {
     border-left-color: var(--column-bg-done);
 }
+
+/* --- Edit Modal Polishing (rounded, smooth) --- */
+.task-modal {
+    max-width: 520px;
+    width: 92%;
+    padding: 28px 28px 24px;
+    border-radius: var(--radius-l);
+    box-shadow: var(--shadow-md);
+}
+
+.modal-close-btn { border-radius: var(--radius-s); padding: 4px; transition: background-color var(--duration) var(--easing); }
+.modal-close-btn:hover { background-color: var(--bg-tertiary); }
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: var(--radius-m);
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: inherit;
+    transition: background-color var(--duration) var(--easing), border-color var(--duration) var(--easing), box-shadow var(--duration) var(--easing), transform var(--duration) var(--easing);
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(var(--accent-color-rgb), 0.15);
+    background-color: var(--bg-secondary);
+}
+
+.label-suggestion-item { padding: 6px 10px; border-radius: var(--radius-m); transition: background-color var(--duration) var(--easing), color var(--duration) var(--easing), transform var(--duration) var(--easing); }
+.label-suggestion-item:hover { transform: translateY(-1px); }
+.label-suggestion-item-wrapper { border-radius: var(--radius-m); }
+.label-delete-btn { transition: color var(--duration-fast) var(--easing), background-color var(--duration-fast) var(--easing); }
+
+.btn { padding: 10px 16px; border-radius: var(--radius-m); font-weight: 700; transition: background-color var(--duration) var(--easing), box-shadow var(--duration) var(--easing), transform var(--duration) var(--easing); }
+.btn-primary:hover { transform: translateY(-1px); box-shadow: var(--shadow-sm); }
 
 .day-task-title {
     font-weight: bold;

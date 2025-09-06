@@ -215,6 +215,10 @@
     padding-bottom: 24px; /* Add padding at the bottom */
 }
 
+/* Saved Views */
+.saved-views { display: flex; flex-direction: column; gap: 8px; margin: 8px 0 16px; }
+.saved-views-list { display: flex; flex-direction: column; gap: 8px; }
+
 /* --- 3.3 Search & Filter --- */
 .search-filter-container {
     display: flex;
@@ -338,8 +342,54 @@
 /* --- 3.4 Main Content (Kanban Board) --- */
 .main-content {
     flex-grow: 1;
-    padding: 24px;
+    padding: 32px var(--gutter);
     overflow-x: auto; /* 允许水平滚动 */
     overflow-y: hidden;
     background-color: var(--bg-primary);
+    max-width: var(--content-max);
+    margin: 0 auto;
 }
+
+/* --- 简约现代：覆盖与增强 --- */
+.app-header {
+    backdrop-filter: saturate(150%) blur(8px);
+    box-shadow: var(--shadow-xs);
+    transition: background-color var(--duration) var(--easing), border-color var(--duration) var(--easing), backdrop-filter var(--duration) var(--easing), box-shadow var(--duration) var(--easing);
+}
+
+.theme-switcher {
+    border-radius: var(--radius-l);
+    box-shadow: var(--shadow-sm);
+    transition: background-color var(--duration) var(--easing), box-shadow var(--duration) var(--easing), transform var(--duration) var(--easing);
+}
+.theme-switcher:hover { box-shadow: var(--shadow-md); }
+
+.multi-panel-toggle {
+    border-radius: var(--radius-l);
+    transition: background-color var(--duration) var(--easing), transform var(--duration) var(--easing), box-shadow var(--duration) var(--easing);
+}
+.multi-panel-toggle:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+
+.app-nav {
+    box-shadow: var(--shadow-xs);
+    transition: width var(--duration) var(--easing), padding var(--duration) var(--easing), transform var(--duration) var(--easing), box-shadow var(--duration) var(--easing);
+}
+
+.nav-toggle:hover { transform: translateY(-1px); }
+
+.nav__view-btn {
+    border-top-left-radius: var(--radius-l);
+    border-bottom-left-radius: var(--radius-l);
+    transition: background-color var(--duration) var(--easing), color var(--duration) var(--easing), transform var(--duration) var(--easing);
+}
+.nav__view-btn:not([aria-pressed="true"]):hover { transform: translateX(2px); }
+
+.filter-btn {
+    border-radius: var(--radius-l);
+    box-shadow: var(--shadow-sm);
+    transition: background-color var(--duration) var(--easing), box-shadow var(--duration) var(--easing), transform var(--duration) var(--easing);
+}
+.filter-btn:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); }

@@ -2,10 +2,10 @@
 .task-card {
     background-color: var(--bg-secondary);
     padding: 16px;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px var(--shadow-color);
+    border-radius: var(--radius-m);
+    box-shadow: var(--shadow-sm);
     cursor: grab;
-    transition: all 0.3s ease;
+    transition: background-color var(--duration) var(--easing), box-shadow var(--duration) var(--easing), transform var(--duration) var(--easing), border-color var(--duration) var(--easing);
     position: relative;
 }
 .task-card:active {
@@ -28,8 +28,8 @@
 
 .task-card.dragging {
     opacity: 0.5;
-    transform: scale(1.05) rotate(3deg);
-    box-shadow: 0 8px 16px var(--shadow-color);
+    transform: scale(1.02) rotate(2deg);
+    box-shadow: var(--shadow-md);
 }
 
 .task-card__title {
@@ -37,6 +37,36 @@
     font-weight: bold;
     margin-bottom: 8px;
 }
+
+/* 快捷操作条（悬停显示） */
+.task-card__quick-actions {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    display: flex;
+    gap: 6px;
+    opacity: 0;
+    transform: translateY(-4px);
+    transition: opacity var(--duration) var(--easing), transform var(--duration) var(--easing);
+}
+.task-card:hover .task-card__quick-actions { opacity: 1; transform: translateY(0); }
+.qa-btn {
+    background: var(--bg-tertiary);
+    color: var(--text-secondary);
+    border-radius: 10px;
+    padding: 4px 6px;
+    font-size: 14px;
+    line-height: 1;
+    transition: background-color var(--duration) var(--easing), color var(--duration) var(--easing), transform var(--duration) var(--easing);
+}
+.qa-btn:hover { background: var(--accent-color-hover); color: #fff; transform: translateY(-1px); }
+
+/* 悬停/点击微交互 */
+.task-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+.task-card:active { transform: translateY(-1px) scale(0.997); }
 
 .task-card__labels {
     display: flex;
@@ -177,7 +207,7 @@
     height: 100%;
     background-color: var(--accent-color);
     border-radius: 4px;
-    transition: width 0.3s ease;
+    transition: width var(--duration) var(--easing);
 }
 
 .subtask-panel {

@@ -14,7 +14,7 @@ body {
     font-family: var(--font-family);
     background-color: var(--bg-primary);
     color: var(--text-primary);
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition: background-color var(--duration) var(--easing), color var(--duration) var(--easing);
     display: flex;
     flex-direction: column;
 }
@@ -25,4 +25,31 @@ button {
     border: none;
     background: none;
     color: inherit;
+}
+
+/* 交互基础样式（简约现代） */
+.btn, .theme-switcher, .multi-panel-toggle, .nav__view-btn, .add-task-btn, .btn-primary {
+    border-radius: var(--radius-m);
+    transition: background-color var(--duration) var(--easing), color var(--duration) var(--easing), transform var(--duration) var(--easing), box-shadow var(--duration) var(--easing);
+    will-change: transform;
+}
+
+.btn:active, .theme-switcher:active, .multi-panel-toggle:active, .nav__view-btn:active, .add-task-btn:active, .btn-primary:active {
+    transform: translateY(0.5px) scale(0.99);
+}
+
+/* 可访问性：聚焦可见环 */
+:focus-visible {
+    outline: 2px solid transparent;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color) 45%, transparent);
+    border-radius: var(--radius-m);
+}
+
+/* 降低动画偏好 */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation: none !important;
+        transition: none !important;
+        scroll-behavior: auto !important;
+    }
 }

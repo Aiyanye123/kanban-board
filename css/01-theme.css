@@ -2,28 +2,56 @@
 :root {
     --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 
-    /* 浅色主题 */
-    --bg-primary: #f4f7fd;
+    /* 浅色主题（简约现代） */
+    --bg-primary: #f6f7fb;
     --bg-secondary: #ffffff;
-    --bg-tertiary: #e4ebfa;
-    --bg-header: #ffffff;
-    --text-primary: #000112;
-    --text-secondary: #828fa3;
-    --border-color: #e4ebfa;
-    --shadow-color: rgba(54, 78, 126, 0.1);
-    --accent-color: #635fc7;
-    --accent-color-hover: #a8a4ff;
+    --bg-tertiary: #eef1f8;
+    --bg-header: #ffffffcc; /* 半透明以获得轻微毛玻璃效果 */
+    --text-primary: #0f1222;
+    --text-secondary: #7a8499;
+    --border-color: #e6e9f2;
+    --shadow-color: rgba(15, 18, 34, 0.08);
+    /* 主色改为清新墨绿青（Teal），避免蓝紫 AI 风格 */
+    --accent-color: #14b8a6;           /* Teal 500 */
+    --accent-color-hover: #2dd4bf;     /* Teal 400 */
     --danger-color: #ea5555;
-    --danger-color-hover: #ff9898;
-    --column-bg-todo: #49C4E5;
-    --column-bg-inprogress: #8471F2;
-    --column-bg-done: #67E2AE;
-    --modal-overlay-bg: rgba(0, 0, 0, 0.5);
-    --highlight-bg: #a8a4ff33;
+    --danger-color-hover: #ff7a7a;
+    /* 列状态点配色（去蓝紫） */
+    --column-bg-todo: #94a3b8;         /* Slate */
+    --column-bg-inprogress: #f59e0b;   /* Amber */
+    --column-bg-done: #10b981;         /* Emerald */
+    --modal-overlay-bg: rgba(15, 18, 34, 0.55);
+    --highlight-bg: #14b8a61a;         /* Teal with subtle alpha */
     --color--high:#ea5555;
-    --color--medium:#f6f343;
-    --color--low:#31f2a2;
+    --color--medium:#f59e0b;           /* Amber for medium priority */
+    --color--low:#31d89a;
 
+    /* 圆角与阴影（可复用的设计令牌） */
+    --radius-s: 6px;
+    --radius-m: 10px;
+    --radius-l: 16px;
+    --shadow-xs: 0 1px 2px rgba(15, 18, 34, 0.06);
+    --shadow-sm: 0 4px 10px var(--shadow-color);
+    --shadow-md: 0 10px 24px rgba(15, 18, 34, 0.12);
+
+    /* 动画与过渡 */
+    --duration-fast: 140ms;
+    --duration: 220ms;
+    --duration-slow: 360ms;
+    --easing: cubic-bezier(0.2, 0, 0, 1);
+    --easing-emphasis: cubic-bezier(0.2, 0, 0, 0.9);
+
+    /* 布局与间距 */
+    --content-max: 1440px;
+    --gutter: 24px;
+    --kanban-column-width: 380px;
+
+    /* 扩展色值（便于 rgba 与深浅变体） */
+    --accent-color-rgb: 20, 184, 166;  /* #14b8a6 */
+    --accent-color-dark: #0f766e;      /* 深一阶的 Teal */
+    --border-color-light: #edf1f7;
+
+    /* 标签预置颜色 */
     --Tags--styles1: #ff5733;
     --Tags--styles2: #ffc300;
     --Tags--styles3: #33ff57;
@@ -35,14 +63,15 @@
 }
 
 [data-theme="dark"] {
-    /* 深色主题 */
-    --bg-primary: #20212c;
-    --bg-secondary: #2b2c37;
-    --bg-tertiary: #3e3f4e;
-    --bg-header: #2b2c37;
-    --text-primary: #ffffff;
-    --text-secondary: #828fa3;
-    --border-color: #3e3f4e;
-    --shadow-color: rgba(0, 0, 0, 0.25);
-    --modal-overlay-bg: rgba(0, 0, 0, 0.7);
+    /* 深色主题（对比更柔和） */
+    --bg-primary: #1e2030;
+    --bg-secondary: #25273a;
+    --bg-tertiary: #2d2f45;
+    --bg-header: #25273acc;
+    --text-primary: #f3f4f8;
+    --text-secondary: #9aa1b5;
+    --border-color: #32344a;
+    --shadow-color: rgba(0, 0, 0, 0.28);
+    --modal-overlay-bg: rgba(0, 0, 0, 0.6);
+    --border-color-light: #3a3d54;
 }
