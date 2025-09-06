@@ -70,6 +70,10 @@ export function createTaskCardElement(task) {
 
     card.innerHTML = `
         ${(task.labels && task.labels.length > 0) ? `<div class="task-card__labels">${labelsHTML}</div>` : ''}
+        <div class="task-card__quick-actions">
+            <button class="qa-btn view-details-btn" title="查看详情">👁️</button>
+            <button class="qa-btn edit-task-btn" title="编辑">✏️</button>
+        </div>
         <div class="task-card__header">
             <h3 class="task-card__title">${task.title}</h3>
             ${allSubtasksDone ? '<span class="task-card__checkmark" aria-label="所有子任务已完成">✔</span>' : ''}
