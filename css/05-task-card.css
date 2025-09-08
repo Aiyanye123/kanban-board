@@ -8,6 +8,7 @@
     transition: background-color var(--duration) var(--easing), box-shadow var(--duration) var(--easing), transform var(--duration) var(--easing), border-color var(--duration) var(--easing);
     position: relative;
 }
+.task-card--menu-open { z-index: 1000; }
 .task-card:active {
     cursor: grabbing;
 }
@@ -67,6 +68,11 @@
     box-shadow: var(--shadow-md);
 }
 .task-card:active { transform: translateY(-1px) scale(0.997); }
+
+/* 紧凑视图：减少留白并隐藏描述 */
+.kanban-board.compact .task-card { padding: 12px; }
+.kanban-board.compact .task-card__description { display: none; }
+.kanban-board.compact .task-card__labels { margin-bottom: 6px; }
 
 .task-card__labels {
     display: flex;
