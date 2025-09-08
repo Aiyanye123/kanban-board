@@ -1,8 +1,6 @@
 import * as DOM from './dom.js';
 import state from './state.js';
 import { setView } from './view.js';
-import { STATUS_NAMES, PRIORITY_NAMES } from './constants.js';
-import { normalizeDate } from './utils.js';
 
 /**
  * @description 获取指定日期的任务
@@ -12,11 +10,13 @@ import { normalizeDate } from './utils.js';
  * @returns {Array} - 任务列表
  */
 function getTasksForDate(year, month, day) {
-    const targetDate = normalizeDate(new Date(year, month, day));
+    const targetDate = new Date(year, month, day);
+    targetDate.setHours(0,0,0,0);
     
     return state.tasks.filter(task => {
         if (!task.dueDate) return false;
-        const taskDate = normalizeDate(task.dueDate);
+        const taskDate = new Date(task.dueDate);
+        taskDate.setHours(0,0,0,0);
         return taskDate.getTime() === targetDate.getTime();
     });
 }
@@ -56,8 +56,8 @@ function showTaskDetail(taskId) {
     
     state.selectedTaskForDetail = task;
     
-    const statusNames = STATUS_NAMES;
-    const priorityNames = PRIORITY_NAMES;
+    const statusNames = { 'todo': '待办事项', 'in-progress': '进行中', 'done': '已完成' };
+    const priorityNames = { 'high': '高', 'medium': '中', 'low': '低' };
     
     DOM.taskDetailContent.innerHTML = `
         <div class="task-detail-item"><div class="task-detail-label">任务标题</div><div class="task-detail-value">${task.title}</div></div>
@@ -87,7 +87,7 @@ function showDayTasks(dateStr) {
     
     DOM.dayTasksTitle.textContent = `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日的任务`;
     
-    const statusNames = STATUS_NAMES;
+    const statusNames = { 'todo': '待办事项', 'in-progress': '进行中', 'done': '已完成' };
     
     DOM.dayTasksContent.innerHTML = `<div class="day-tasks-list">
         ${dayTasks.map(task => `

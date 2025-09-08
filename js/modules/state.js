@@ -7,7 +7,6 @@ const state = {
     currentView: 'all', // 'all', 'todo', 'in-progress', 'done', 'calendar', 'stats'
     isAnimating: false, // 防止动画期间重复点击
     multiPanelMode: true, // 默认开启多面板模式
-    sortBy: 'default', // 'default' | 'dueAsc' | 'dueDesc'
     activeFilters: {
         status: ['todo', 'in-progress', 'done'],
         date: null,

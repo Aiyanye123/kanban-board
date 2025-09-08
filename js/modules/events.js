@@ -4,15 +4,14 @@ import { saveThemeToStorage } from './storage.js';
 import { setView } from './view.js';
 import { openModal, closeModal, handleFormSubmit } from './modal.js';
 import { deleteTask, moveTask } from './task.js';
-import { deleteLabel, renderLabelFilters } from './label.js';
+import { deleteLabel } from './label.js';
 import { handleDrop, handleDragOver, handleDragLeave } from './drag-drop.js';
 import { toggleSubtaskPanel, addSubtask, updateSubtask, deleteSubtask, getDragAfterElement } from './subtask.js';
 import { applySearch, applyFilters, clearFilters } from './filter.js';
 import { renderCalendar, jumpToKanban } from './calendar.js';
 import { hideReminderBanner } from './reminder.js';
-import { updateFilePreview, renderBoard } from './ui.js';
+import { updateFilePreview } from './ui.js';
 import { importBoard, exportBoard } from './import-export.js';
-import { saveTasksToStorage } from './storage.js';
 
 export function addEventListeners() {
     // 主题切换
@@ -69,14 +68,11 @@ export function addEventListeners() {
                 m.classList.remove('show');
                 m.closest('.kanban-column').classList.remove('menu-is-open');
             });
-            document.querySelectorAll('.task-card.task-card--menu-open').forEach(card => card.classList.remove('task-card--menu-open'));
 
             // If the menu was not open, open it
             if (!wasOpen) {
                 menu.classList.add('show');
                 menu.closest('.kanban-column').classList.add('menu-is-open');
-                const card = menu.closest('.task-card');
-                if (card) card.classList.add('task-card--menu-open');
             }
             return;
         }
@@ -225,7 +221,6 @@ export function addEventListeners() {
                 menu.classList.remove('show');
                 menu.closest('.kanban-column').classList.remove('menu-is-open');
             });
-            document.querySelectorAll('.task-card.task-card--menu-open').forEach(card => card.classList.remove('task-card--menu-open'));
         }
         if (!DOM.filterDropdown.contains(e.target) && e.target !== DOM.filterBtn) {
             DOM.filterDropdown.classList.remove('show');
@@ -330,58 +325,6 @@ export function addEventListeners() {
             setTimeout(() => {
                 DOM.multiPanelToggle.style.animation = 'bounce 0.6s ease';
             }, 10);
-        });
-    }
-
-    // 看板工具栏操作
-    if (DOM.boardToolbar) {
-        DOM.boardToolbar.addEventListener('click', (e) => {
-            const btn = e.target.closest('.board-action-btn');
-            if (!btn) return;
-            const action = btn.dataset.action;
-            switch (action) {
-                case 'sort-due': {
-                    // 循环切换排序：默认 -> 升序 -> 降序 -> 默认
-                    if (state.sortBy === 'default') {
-                        state.sortBy = 'dueAsc';
-                        btn.textContent = '截止日↑';
-                    } else if (state.sortBy === 'dueAsc') {
-                        state.sortBy = 'dueDesc';
-                        btn.textContent = '截止日↓';
-                    } else {
-                        state.sortBy = 'default';
-                        btn.textContent = '截止日排序';
-                    }
-                    renderBoard();
-                    break;
-                }
-                case 'toggle-compact': {
-                    const board = document.getElementById('kanban-board');
-                    if (board) board.classList.toggle('compact');
-                    btn.classList.toggle('active');
-                    break;
-                }
-                case 'clear-done': {
-                    if (confirm('确定要清空所有已完成的任务吗？此操作不可撤销。')) {
-                        state.tasks = state.tasks.filter(t => t.status !== 'done');
-                        // 清理未被使用的标签，并同步激活筛选
-                        const used = new Set();
-                        state.tasks.forEach(t => (t.labels || []).forEach(l => used.add(l)));
-                        Object.keys(state.labels).forEach(l => { if (!used.has(l)) delete state.labels[l]; });
-                        state.activeFilters.labels = state.activeFilters.labels.filter(l => used.has(l));
-                        saveTasksToStorage();
-                        renderLabelFilters();
-                        renderBoard();
-                    }
-                    break;
-                }
-                case 'export':
-                    exportBoard();
-                    break;
-                case 'import':
-                    importBoard();
-                    break;
-            }
         });
     }
 

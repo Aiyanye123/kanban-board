@@ -6,7 +6,6 @@ import { renderLabelFilters } from './modules/label.js';
 import { setView } from './modules/view.js';
 import { requestNotificationPermission, updateActiveReminders } from './modules/reminder.js';
 import { addEventListeners } from './modules/events.js';
-import { renderSavedViewsList, bindSavedViewsEvents } from './modules/saved-views.js';
 
 // 初始化多面板按钮状态
 function initMultiPanelToggle() {
@@ -29,8 +28,6 @@ function initApp() {
     // 3. 渲染初始UI
     renderBoard();
     renderLabelFilters();
-    renderSavedViewsList();
-    bindSavedViewsEvents();
     initMultiPanelToggle();
 
     // 4. 设置初始视图

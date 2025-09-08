@@ -3,8 +3,6 @@ import state, { TAG_STYLE_COUNT } from './state.js';
 import { handleDragStart, handleDragEnd } from './drag-drop.js';
 import { toggleSubtaskPanel } from './subtask.js';
 import { applySearch } from './filter.js';
-import { STATUS_NAMES } from './constants.js';
-import { isOverdueISO, isWithinNextDaysISO } from './utils.js';
 
 /**
  * @description 更新每列头部的任务计数
@@ -33,7 +31,17 @@ export function createTaskCardElement(task) {
     card.dataset.id = task.id;
     card.setAttribute('tabindex', '0'); // 为了键盘导航
 
-    const isOverdue = isOverdueISO(task.dueDate);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const todayTime = today.getTime();
+    
+    let dueDate = null;
+    if (task.dueDate) {
+        const due = new Date(task.dueDate);
+        due.setHours(0, 0, 0, 0);
+        dueDate = due.getTime();
+    }
+    const isOverdue = dueDate && dueDate < todayTime;
 
     const subtasks = task.subtasks || [];
     const totalSubtasks = subtasks.length;
@@ -50,17 +58,18 @@ export function createTaskCardElement(task) {
         `<span class="task-card__label" style="background-color: ${state.labels[label] || '#cccccc'}">${label}</span>`
     ).join('');
 
-    const otherStatuses = Object.keys(STATUS_NAMES).filter(s => s !== task.status);
+    const statuses = {
+        'todo': '待办事项',
+        'in-progress': '进行中',
+        'done': '已完成'
+    };
+    const otherStatuses = Object.keys(statuses).filter(s => s !== task.status);
     const moveOptionsHTML = otherStatuses.map(s =>
-        `<li class="task-card__submenu-item"><button class="move-task-btn" data-status="${s}">${STATUS_NAMES[s]}</button></li>`
+        `<li class="task-card__submenu-item"><button class="move-task-btn" data-status="${s}">${statuses[s]}</button></li>`
     ).join('');
 
     card.innerHTML = `
         ${(task.labels && task.labels.length > 0) ? `<div class="task-card__labels">${labelsHTML}</div>` : ''}
-        <div class="task-card__quick-actions">
-            <button class="qa-btn view-details-btn" title="查看详情">👁️</button>
-            <button class="qa-btn edit-task-btn" title="编辑">✏️</button>
-        </div>
         <div class="task-card__header">
             <h3 class="task-card__title">${task.title}</h3>
             ${allSubtasksDone ? '<span class="task-card__checkmark" aria-label="所有子任务已完成">✔</span>' : ''}
@@ -133,28 +142,25 @@ export function renderBoard() {
         
         let dateMatch = true;
         if (state.activeFilters.date === 'upcoming') {
-            dateMatch = isWithinNextDaysISO(task.dueDate, 7);
+            if (!task.dueDate) {
+                dateMatch = false;
+            } else {
+                const dueDate = new Date(task.dueDate);
+                const today = new Date();
+                const sevenDaysFromNow = new Date();
+                sevenDaysFromNow.setDate(today.getDate() + 7);
+                dateMatch = dueDate >= today && dueDate <= sevenDaysFromNow;
+            }
         }
 
         const priorityMatch = state.activeFilters.priority === 'all' || task.priority === state.activeFilters.priority;
-        // 标签筛选采用“交集”逻辑：选中多个标签时，任务必须同时包含所有被选标签
-        const labelMatch = state.activeFilters.labels.length === 0 ||
-                           (Array.isArray(task.labels) && state.activeFilters.labels.every(l => task.labels.includes(l)));
+        const labelMatch = state.activeFilters.labels.length === 0 || 
+                           (task.labels && task.labels.some(label => state.activeFilters.labels.includes(label)));
 
         return statusMatch && dateMatch && priorityMatch && labelMatch;
     });
 
-    // 根据排序设置对任务排序（默认不变，支持按截止日升/降）
-    const tasksToRender = [...filteredTasks];
-    if (state.sortBy === 'dueAsc' || state.sortBy === 'dueDesc') {
-        tasksToRender.sort((a, b) => {
-            const ad = a.dueDate ? new Date(a.dueDate).getTime() : Infinity;
-            const bd = b.dueDate ? new Date(b.dueDate).getTime() : Infinity;
-            return state.sortBy === 'dueAsc' ? ad - bd : bd - ad;
-        });
-    }
-
-    tasksToRender.forEach(task => {
+    filteredTasks.forEach(task => {
         const cardElement = createTaskCardElement(task);
         const columnContainer = document.querySelector(`.kanban-column__cards[data-status="${task.status}"]`);
         if (columnContainer) {
