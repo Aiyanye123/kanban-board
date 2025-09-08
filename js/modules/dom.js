@@ -54,3 +54,6 @@ export const multiPanelToggle = document.getElementById('multi-panel-toggle');
 // 导入导出
 export const exportBoardBtn = document.getElementById('export-board-btn');
 export const importBoardBtn = document.getElementById('import-board-btn');
+
+// 看板工具栏
+export const boardToolbar = document.getElementById('board-toolbar');

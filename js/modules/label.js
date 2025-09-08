@@ -8,17 +8,27 @@ import { renderBoard } from './ui.js';
  */
 export function renderLabelFilters() {
     DOM.labelFilterContainer.innerHTML = '';
-    if (Object.keys(state.labels).length === 0) {
+
+    // 统计每个标签的实际使用数量，只显示使用次数 > 0 的标签
+    const counts = {};
+    state.tasks.forEach(task => {
+        (task.labels || []).forEach(l => {
+            counts[l] = (counts[l] || 0) + 1;
+        });
+    });
+
+    const usedLabels = Object.keys(counts);
+    if (usedLabels.length === 0) {
         DOM.labelFilterContainer.textContent = '暂无标签';
         return;
     }
-    Object.keys(state.labels).forEach(labelName => {
+    usedLabels.forEach(labelName => {
         const tagWrapper = document.createElement('div');
         tagWrapper.className = 'label-filter-tag-wrapper';
 
         const tag = document.createElement('span');
         tag.className = 'label-filter-tag';
-        tag.textContent = labelName;
+        tag.textContent = `${labelName} (${counts[labelName] || 0})`;
         tag.dataset.label = labelName;
         tag.style.backgroundColor = state.labels[labelName];
         

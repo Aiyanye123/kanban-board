@@ -17,6 +17,20 @@
     // 列的顺序映射
     const columnOrder = ['todo', 'in-progress', 'done'];
 
+    // --- 工具函数 ---
+    function isInDOM(el) {
+        return !!(el && el.nodeType === 1 && document.body.contains(el));
+    }
+
+    function ensureValidHighlights() {
+        if (!isInDOM(currentHighlightedColumn)) {
+            currentHighlightedColumn = null;
+        }
+        if (!isInDOM(currentHighlightedTask)) {
+            currentHighlightedTask = null;
+        }
+    }
+
     /**
      * @description 初始化键盘快捷键功能
      */
@@ -45,6 +59,7 @@
      * @param {KeyboardEvent} e - 键盘事件
      */
     function handleGlobalKeydown(e) {
+        ensureValidHighlights();
         // 如果焦点在输入框、文本域或模态框内，则不处理快捷键（除了特殊情况）
         const activeElement = document.activeElement;
         const isInInput = activeElement.tagName === 'INPUT' || 
@@ -120,6 +135,7 @@
      * @description 处理新建任务快捷键
      */
     function handleNewTaskShortcut() {
+        ensureValidHighlights();
         let targetStatus = 'todo'; // 默认状态
 
         // 如果有高亮的列，使用该列的状态
@@ -143,6 +159,7 @@
      * @description 处理编辑任务快捷键
      */
     function handleEditTaskShortcut() {
+        ensureValidHighlights();
         if (currentHighlightedTask) {
             // 通过点击编辑按钮触发
             const editButton = currentHighlightedTask.querySelector('.edit-task-btn');
@@ -156,6 +173,7 @@
      * @description 处理删除任务快捷键
      */
     function handleDeleteTaskShortcut() {
+        ensureValidHighlights();
         if (currentHighlightedTask) {
             // 确保菜单可见
             const menuBtn = currentHighlightedTask.querySelector('.task-card__menu-btn');
@@ -197,6 +215,7 @@
      * @param {number} direction - 方向：-1 向左，1 向右
      */
     function navigateColumns(direction) {
+        ensureValidHighlights();
         const columns = document.querySelectorAll('.kanban-column');
         
         if (!currentHighlightedColumn) {
@@ -226,6 +245,7 @@
      * @param {number} direction - 方向：-1 向上，1 向下
      */
     function navigateTasks(direction) {
+        ensureValidHighlights();
         if (!currentHighlightedColumn) {
             // 如果没有高亮列，先高亮第一列
             const firstColumn = document.querySelector('.kanban-column');
