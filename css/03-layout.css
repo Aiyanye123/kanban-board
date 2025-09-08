@@ -13,7 +13,7 @@
     height: 80px;
     background-color: var(--bg-header);
     border-bottom: 1px solid var(--border-color);
-    transition: background-color 0.3s ease, border-color 0.3s ease;
+    transition: background-color var(--duration) var(--easing), border-color var(--duration) var(--easing);
     flex-shrink: 0;
 }
 
@@ -32,11 +32,17 @@
     background-color: var(--accent-color);
     color: white;
     border-radius: 20px;
-    transition: background-color 0.3s ease;
+    transition: background-color var(--duration) var(--easing);
 }
 .theme-switcher:hover {
     background-color: var(--accent-color-hover);
 }
+
+/* 统一主题图标显示（浅色=太阳，深色=月亮） */
+.theme-switcher { display: inline-flex; align-items: center; gap: 6px; }
+.theme-switcher .icon-sun, .theme-switcher .icon-moon { display: inline-flex; }
+[data-theme="light"] .theme-switcher .icon-moon { display: none; }
+[data-theme="dark"] .theme-switcher .icon-sun { display: none; }
 
 
 /* 多面板切换按钮样式 */
@@ -48,7 +54,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  transition: all 0.3s ease;
+  transition: all var(--duration) var(--easing);
   position: relative;
   overflow: hidden;
 }
@@ -113,7 +119,7 @@
     padding: 24px;
     display: flex;
     flex-direction: column;
-    transition: width 0.3s ease, padding 0.3s ease, transform 0.3s ease;
+    transition: width var(--duration) var(--easing), padding var(--duration) var(--easing), transform var(--duration) var(--easing);
     overflow-y: auto;
 }
 .app-nav.collapsed {
@@ -148,7 +154,7 @@
 .nav-toggle svg {
     width: 20px;
     height: 20px;
-    transition: transform 0.3s ease;
+    transition: transform var(--duration) var(--easing);
 }
 .app-nav.collapsed .nav-toggle svg {
     transform: rotate(180deg);
@@ -182,6 +188,7 @@
     color: var(--text-secondary);
     text-align: left;
     width: 100%;
+    transition: background-color var(--duration) var(--easing), color var(--duration) var(--easing), transform var(--duration) var(--easing);
 }
 
 .nav__view-btn[aria-pressed="true"] {
@@ -194,16 +201,25 @@
     color: var(--accent-color);
 }
 
+/* 统一图标尺寸 */
+.nav__view-btn .nav__icon svg { width: 20px; height: 20px; }
+.app-nav.collapsed .nav__view-btn .nav__icon svg { width: 22px; height: 22px; }
+
+/* 选中态轻阴影 */
+.nav__view-btn[aria-pressed="true"] { box-shadow: var(--shadow-xs); }
+
 .app-nav.collapsed .nav__view-btn {
     justify-content: center;
+    align-items: center;
+    flex-direction: column;
     margin: 0 auto;
-    border-radius: 8px;
-    width: 48px;
-    height: auto;
-    padding: 12px 4px;
-    writing-mode: vertical-lr;
-    text-orientation: mixed;
-    letter-spacing: 4px;
+    width: 56px;
+    height: 56px;
+    padding: 6px;
+    border-radius: 14px;
+    writing-mode: initial;
+    text-orientation: initial;
+    letter-spacing: normal;
 }
 .app-nav.collapsed .nav__view-btn .nav__list-text {
     display: none;
@@ -214,6 +230,10 @@
     margin-top: 20px;
     padding-bottom: 24px; /* Add padding at the bottom */
 }
+
+/* Saved Views */
+.saved-views { display: flex; flex-direction: column; gap: 8px; margin: 8px 0 16px; }
+.saved-views-list { display: flex; flex-direction: column; gap: 8px; }
 
 /* --- 3.3 Search & Filter --- */
 .search-filter-container {
@@ -238,7 +258,7 @@
     background-color: var(--accent-color);
     color: white;
     border-radius: 20px;
-    transition: background-color 0.3s ease;
+    transition: background-color var(--duration) var(--easing);
 }
 .filter-btn:hover {
     background-color: var(--accent-color-hover);
@@ -346,6 +366,38 @@
     margin: 0 auto;
 }
 
+/* 看板操作工具栏 */
+.board-toolbar {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 8px;
+    margin: 12px 0 16px;
+}
+
+.board-action-btn {
+    padding: 8px 12px;
+    background-color: var(--bg-tertiary);
+    color: var(--text-secondary);
+    border-radius: 20px;
+    font-weight: bold;
+    box-shadow: var(--shadow-sm);
+    transition: background-color var(--duration) var(--easing), box-shadow var(--duration) var(--easing), transform var(--duration) var(--easing);
+}
+.board-action-btn:hover {
+    background-color: var(--accent-color);
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+.board-action-btn--danger {
+    color: var(--danger-color);
+}
+.board-action-btn--danger:hover {
+    background-color: var(--danger-color);
+    color: #fff;
+}
+
 /* --- 简约现代：覆盖与增强 --- */
 .app-header {
     backdrop-filter: saturate(150%) blur(8px);
@@ -389,3 +441,42 @@
     transition: background-color var(--duration) var(--easing), box-shadow var(--duration) var(--easing), transform var(--duration) var(--easing);
 }
 .filter-btn:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); }
+
+/* --- 3.2 Navigation – Enhanced Compact Icons --- */
+/* 图标与文本布局（非折叠时显示图标+文字） */
+.nav__view-btn .nav__icon { font-size: 18px; line-height: 1; }
+.nav__view-btn .nav__text { white-space: nowrap; }
+
+/* 折叠状态：用圆角图标按钮替代竖排文字 */
+.app-nav.collapsed .nav__view-btn {
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 56px;
+    height: 56px;
+    padding: 6px;
+    margin: 0 auto;
+    border-radius: 14px;
+    writing-mode: initial;
+    letter-spacing: normal;
+}
+.app-nav.collapsed .nav__view-btn .nav__list-text { display: none; }
+.app-nav.collapsed .nav__view-btn .nav__icon { font-size: 20px; }
+.app-nav.collapsed .nav__view-btn[aria-pressed="true"] {
+    box-shadow: var(--shadow-sm);
+}
+.app-nav.collapsed .nav__view-btn:not([aria-pressed="true"]):hover {
+    transform: translateY(-1px);
+}
+
+/* 侧边栏细节美化 */
+.app-nav {
+    background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-secondary) 60%, var(--bg-tertiary) 100%);
+}
+.app-nav::-webkit-scrollbar { width: 8px; }
+.app-nav::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 8px;
+}
+.app-nav.collapsed { gap: 10px; }

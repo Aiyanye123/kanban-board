@@ -6,6 +6,7 @@ import { renderLabelFilters } from './modules/label.js';
 import { setView } from './modules/view.js';
 import { requestNotificationPermission, updateActiveReminders } from './modules/reminder.js';
 import { addEventListeners } from './modules/events.js';
+import { renderSavedViewsList, bindSavedViewsEvents } from './modules/saved-views.js';
 
 // 初始化多面板按钮状态
 function initMultiPanelToggle() {
@@ -19,7 +20,7 @@ function initMultiPanelToggle() {
 function initApp() {
     // 1. 加载数据和设置
     const theme = loadThemeFromStorage();
-    DOM.themeSwitcher.textContent = theme === 'light' ? '切换深色' : '切换浅色';
+    DOM.themeSwitcher?.setAttribute('aria-label', theme === 'light' ? '切换到深色' : '切换到浅色');
     loadTasksFromStorage();
 
     // 2. 绑定所有事件
@@ -28,7 +29,14 @@ function initApp() {
     // 3. 渲染初始UI
     renderBoard();
     renderLabelFilters();
+    renderSavedViewsList();
+    bindSavedViewsEvents();
     initMultiPanelToggle();
+
+    // 注入统一的 SVG 图标
+    import('./modules/icons.js')
+        .then(({ injectIcons }) => injectIcons())
+        .catch(e => console.warn('图标注入失败', e));
 
     // 4. 设置初始视图
     const savedView = loadViewFromStorage();

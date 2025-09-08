@@ -53,3 +53,42 @@ button {
         scroll-behavior: auto !important;
     }
 }
+
+/* 主题切换全局过渡（强调黑白变化） */
+html.theme-animating :where(
+    body,
+    .app-header,
+    .app-nav,
+    .main-content,
+    .kanban-board,
+    .kanban-column,
+    .task-card,
+    .subtask-panel,
+    .board-toolbar,
+    .nav__view-btn,
+    .filter-dropdown,
+    .stats-view,
+    .calendar-view,
+    .modal,
+    dialog,
+    .modal-header,
+    .modal-content,
+    .selected-file-item,
+    .reminder-banner,
+    .search-box input,
+    .filter-btn,
+    .add-task-btn,
+    .board-action-btn,
+    .theme-switcher,
+    .multi-panel-toggle,
+    input,
+    select,
+    textarea
+) {
+    transition: background-color var(--duration) var(--easing),
+                color var(--duration) var(--easing),
+                border-color var(--duration) var(--easing),
+                box-shadow var(--duration) var(--easing),
+                fill var(--duration) var(--easing),
+                stroke var(--duration) var(--easing) !important;
+}

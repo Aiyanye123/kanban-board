@@ -8,6 +8,7 @@
     transition: background-color var(--duration) var(--easing), box-shadow var(--duration) var(--easing), transform var(--duration) var(--easing), border-color var(--duration) var(--easing);
     position: relative;
 }
+.task-card--menu-open { z-index: 1000; }
 .task-card:active {
     cursor: grabbing;
 }
@@ -38,12 +39,40 @@
     margin-bottom: 8px;
 }
 
+/* 快捷操作条（悬停显示） */
+.task-card__quick-actions {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    display: flex;
+    gap: 6px;
+    opacity: 0;
+    transform: translateY(-4px);
+    transition: opacity var(--duration) var(--easing), transform var(--duration) var(--easing);
+}
+.task-card:hover .task-card__quick-actions { opacity: 1; transform: translateY(0); }
+.qa-btn {
+    background: var(--bg-tertiary);
+    color: var(--text-secondary);
+    border-radius: 10px;
+    padding: 4px 6px;
+    font-size: 14px;
+    line-height: 1;
+    transition: background-color var(--duration) var(--easing), color var(--duration) var(--easing), transform var(--duration) var(--easing);
+}
+.qa-btn:hover { background: var(--accent-color-hover); color: #fff; transform: translateY(-1px); }
+
 /* 悬停/点击微交互 */
 .task-card:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-md);
 }
 .task-card:active { transform: translateY(-1px) scale(0.997); }
+
+/* 紧凑视图：减少留白并隐藏描述 */
+.kanban-board.compact .task-card { padding: 12px; }
+.kanban-board.compact .task-card__description { display: none; }
+.kanban-board.compact .task-card__labels { margin-bottom: 6px; }
 
 .task-card__labels {
     display: flex;

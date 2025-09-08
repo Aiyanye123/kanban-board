@@ -15,6 +15,9 @@ export const filterDropdown = document.getElementById('filter-dropdown');
 export const clearFiltersBtn = document.getElementById('clear-filters-btn');
 export const priorityFilter = document.getElementById('priority-filter');
 export const labelFilterContainer = document.getElementById('label-filter-container');
+// 已保存视图
+export const saveViewBtn = document.getElementById('save-view-btn');
+export const savedViewsList = document.getElementById('saved-views-list');
 export const taskPriorityInput = document.getElementById('task-priority');
 export const taskLabelsInput = document.getElementById('task-labels');
 export const labelSuggestionsContainer = document.getElementById('label-suggestions');
@@ -51,3 +54,6 @@ export const multiPanelToggle = document.getElementById('multi-panel-toggle');
 // 导入导出
 export const exportBoardBtn = document.getElementById('export-board-btn');
 export const importBoardBtn = document.getElementById('import-board-btn');
+
+// 看板工具栏
+export const boardToolbar = document.getElementById('board-toolbar');

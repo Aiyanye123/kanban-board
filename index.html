@@ -13,11 +13,35 @@
     <header class="app-header">
         <h1 class="app-header__title">任务管理看板</h1>
         <div class="app-header__actions">
-            <button class="theme-switcher" id="theme-switcher" aria-label="切换主题">切换主题</button>
+            <button class="theme-switcher" id="theme-switcher" aria-label="切换主题">
+                <span class="icon-sun" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="4"></circle>
+                        <path d="M12 2v2M12 20v2M4 12H2M22 12h-2M5 5l-1.5-1.5M20.5 20.5L19 19M5 19l-1.5 1.5M20.5 3.5L19 5"></path>
+                    </svg>
+                </span>
+                <span class="icon-moon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"></path>
+                    </svg>
+                </span>
+            </button>
             <button class="multi-panel-toggle" id="multi-panel-toggle" aria-label="多面板模式">
               <div class="toggle-icon">
-                <span class="single-icon">📋</span>
-                <span class="multi-icon">📚</span>
+                <span class="single-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+                        <path d="M8 4v16"></path>
+                    </svg>
+                </span>
+                <span class="multi-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="4" width="7" height="7" rx="2"></rect>
+                        <rect x="14" y="4" width="7" height="7" rx="2"></rect>
+                        <rect x="3" y="13" width="7" height="7" rx="2"></rect>
+                        <rect x="14" y="13" width="7" height="7" rx="2"></rect>
+                    </svg>
+                </span>
               </div>
               <span class="toggle-text">多面板切换</span>
             </button>
@@ -33,12 +57,66 @@
             </button>
             <h2 class="nav__title">视图</h2>
             <div class="nav__view-buttons" id="view-buttons">
-                <button class="nav__view-btn" data-view="all" aria-pressed="true">全部</button>
-                <button class="nav__view-btn" data-view="todo" aria-pressed="false">待办事项</button>
-                <button class="nav__view-btn" data-view="in-progress" aria-pressed="false">进行中</button>
-                <button class="nav__view-btn" data-view="done" aria-pressed="false">已完成</button>
-                <button class="nav__view-btn" data-view="calendar" aria-pressed="false">日历视图</button>
-                <button class="nav__view-btn" data-view="stats" aria-pressed="false">统计</button>
+                <button class="nav__view-btn" data-view="all" aria-pressed="true" title="全部">
+                    <span class="nav__icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="8" height="8" rx="2"></rect>
+                            <rect x="13" y="3" width="8" height="8" rx="2"></rect>
+                            <rect x="3" y="13" width="8" height="8" rx="2"></rect>
+                            <rect x="13" y="13" width="8" height="8" rx="2"></rect>
+                        </svg>
+                    </span>
+                    <span class="nav__text nav__list-text">全部</span>
+                </button>
+                <button class="nav__view-btn" data-view="todo" aria-pressed="false" title="待办事项">
+                    <span class="nav__icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M7 3h7l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"></path>
+                            <path d="M14 3v5h5"></path>
+                            <path d="M8 13h8"></path>
+                            <path d="M8 17h8"></path>
+                        </svg>
+                    </span>
+                    <span class="nav__text nav__list-text">待办事项</span>
+                </button>
+                <button class="nav__view-btn" data-view="in-progress" aria-pressed="false" title="进行中">
+                    <span class="nav__icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="9"></circle>
+                            <path d="M12 7v5l3 3"></path>
+                        </svg>
+                    </span>
+                    <span class="nav__text nav__list-text">进行中</span>
+                </button>
+                <button class="nav__view-btn" data-view="done" aria-pressed="false" title="已完成">
+                    <span class="nav__icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="9"></circle>
+                            <path d="M8 12l3 3 5-6"></path>
+                        </svg>
+                    </span>
+                    <span class="nav__text nav__list-text">已完成</span>
+                </button>
+                <button class="nav__view-btn" data-view="calendar" aria-pressed="false" title="日历视图">
+                    <span class="nav__icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="5" width="18" height="16" rx="2"></rect>
+                            <path d="M16 3v4M8 3v4M3 11h18"></path>
+                        </svg>
+                    </span>
+                    <span class="nav__text nav__list-text">日历视图</span>
+                </button>
+                <button class="nav__view-btn" data-view="stats" aria-pressed="false" title="统计">
+                    <span class="nav__icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 20V10"></path>
+                            <path d="M10 20V4"></path>
+                            <path d="M16 20v-7"></path>
+                            <path d="M22 20v-12"></path>
+                        </svg>
+                    </span>
+                    <span class="nav__text nav__list-text">统计</span>
+                </button>
             </div>
             <div class="search-filter-container">
                 <div class="search-box">
@@ -82,6 +160,13 @@
                     </div>
                 </div>
             </div>
+
+            <!-- 已保存视图 -->
+            <h2 class="nav__title">已保存视图</h2>
+            <div class="saved-views">
+                <button id="save-view-btn" class="nav__view-btn">保存为视图</button>
+                <div id="saved-views-list" class="saved-views-list" aria-label="已保存视图列表"></div>
+            </div>
             <div class="import-export-buttons">
                 <button id="export-board-btn" class="nav__view-btn">导出看板</button>
                 <button id="import-board-btn" class="nav__view-btn">导入看板</button>
@@ -96,6 +181,15 @@
                     <span class="reminder-banner__text" id="reminder-banner-text"></span>
                     <button class="reminder-banner__close" id="reminder-banner-close" aria-label="关闭提醒">&times;</button>
                 </div>
+            </div>
+
+            <!-- 看板操作工具栏 -->
+            <div class="board-toolbar" id="board-toolbar" role="group" aria-label="看板操作">
+                <button class="board-action-btn" data-action="sort-due" aria-label="按截止日期排序">截止日排序</button>
+                <button class="board-action-btn" data-action="toggle-compact" aria-label="切换紧凑视图">紧凑视图</button>
+                <button class="board-action-btn board-action-btn--danger" data-action="clear-done" aria-label="清空已完成">清空已完成</button>
+                <button class="board-action-btn" data-action="export" aria-label="导出看板">导出</button>
+                <button class="board-action-btn" data-action="import" aria-label="导入看板">导入</button>
             </div>
 
             <!-- 看板视图 -->

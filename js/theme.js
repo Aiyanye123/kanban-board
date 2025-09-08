@@ -10,7 +10,7 @@
     function loadTheme() {
         const storedTheme = localStorage.getItem('kanban_theme') || 'light';
         document.documentElement.setAttribute('data-theme', storedTheme);
-        updateSwitcherText(storedTheme);
+        updateSwitcherA11y(storedTheme);
     }
 
     /**
@@ -25,8 +25,9 @@
      * Updates the text on the theme switcher button.
      * @param {string} theme - The current theme.
      */
-    function updateSwitcherText(theme) {
-        themeSwitcher.textContent = theme === 'light' ? '切换深色' : '切换浅色';
+    function updateSwitcherA11y(theme) {
+        const label = theme === 'light' ? '切换到深色' : '切换到浅色';
+        themeSwitcher.setAttribute('aria-label', label);
     }
 
     /**
@@ -37,7 +38,7 @@
         const newTheme = currentTheme === 'light' ? 'dark' : 'light';
         
         document.documentElement.setAttribute('data-theme', newTheme);
-        updateSwitcherText(newTheme);
+        updateSwitcherA11y(newTheme);
         saveTheme(newTheme);
     }
 
