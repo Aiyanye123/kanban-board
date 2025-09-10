@@ -40,6 +40,11 @@ export function moveTask(taskId, newStatus) {
     const task = state.tasks.find(t => t.id === taskId);
     if (task) {
         task.status = newStatus;
+        const now = new Date().toISOString();
+        task.updatedAt = now;
+        if (newStatus === 'done') {
+            if (!task.completedAt) task.completedAt = now;
+        }
         saveTasksToStorage();
         renderBoard();
     }

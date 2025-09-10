@@ -4,7 +4,7 @@ import { handleDragStart, handleDragEnd } from './drag-drop.js';
 import { toggleSubtaskPanel } from './subtask.js';
 import { applySearch } from './filter.js';
 import { STATUS_NAMES } from './constants.js';
-import { isOverdueISO, isWithinNextDaysISO } from './utils.js';
+import { isOverdueISO, isWithinNextDaysISO, escapeHtml } from './utils.js';
 
 /**
  * @description 更新每列头部的任务计数
@@ -46,9 +46,16 @@ export function createTaskCardElement(task) {
 
     card.classList.add(`priority--${task.priority || 'medium'}`);
 
-    const labelsHTML = (task.labels || []).map(label => 
-        `<span class="task-card__label" style="background-color: ${state.labels[label] || '#cccccc'}">${label}</span>`
-    ).join('');
+    const labelsHTML = (task.labels || []).map(label => {
+        const rawColor = state.labels[label];
+        let safeColor = '#cccccc';
+        if (typeof rawColor === 'string') {
+            if (/^var\(--Tags--styles\d+\)$/.test(rawColor) || /^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/.test(rawColor)) {
+                safeColor = rawColor;
+            }
+        }
+        return `<span class="task-card__label" style="background-color: ${safeColor}">${escapeHtml(label)}</span>`;
+    }).join('');
 
     const otherStatuses = Object.keys(STATUS_NAMES).filter(s => s !== task.status);
     const moveOptionsHTML = otherStatuses.map(s =>
@@ -62,12 +69,12 @@ export function createTaskCardElement(task) {
             <button class="qa-btn edit-task-btn" title="编辑">✏️</button>
         </div>
         <div class="task-card__header">
-            <h3 class="task-card__title">${task.title}</h3>
+            <h3 class="task-card__title">${escapeHtml(task.title)}</h3>
             ${allSubtasksDone ? '<span class="task-card__checkmark" aria-label="所有子任务已完成">✔</span>' : ''}
         </div>
-        <p class="task-card__description">${task.description || '没有描述'}</p>
+        <p class="task-card__description">${escapeHtml(task.description || '没有描述')}</p>
         <p class="task-card__due-date ${isOverdue ? 'overdue' : ''}">
-            ${task.dueDate ? `截止: ${task.dueDate}` : ''}
+            ${task.dueDate ? `截止: ${escapeHtml(task.dueDate)}` : ''}
         </p>
         
         ${totalSubtasks > 0 ? `

@@ -1,6 +1,7 @@
 /* --- 响应式 --- */
 /* 移动端 (≤ 768px) */
 @media (max-width: 768px) {
+    /* Header 压缩与重排 */
     .app-header {
         padding: 8px 12px;
         flex-wrap: wrap;
@@ -11,10 +12,16 @@
         margin-bottom: 8px;
         width: 100%;
         text-align: center;
+        gap: 8px;
     }
+    .app-header__title::before { width: 8px; height: 8px; box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent-color) 18%, transparent); }
     .app-header__actions {
         justify-content: center;
         width: 100%;
+        gap: 8px;
+        padding: 0;
+        background: transparent;
+        box-shadow: none;
     }
     .app-header__actions .theme-switcher,
     .app-header__actions .multi-panel-toggle {
@@ -22,70 +29,127 @@
         font-size: 12px;
     }
 
+    /* 布局改为移动优先：上导航，下内容 */
     .app-container {
         flex-direction: column;
-        height: 100vh; /* 确保容器占满屏幕高度 */
+        height: 100vh; /* 占满可视高度 */
     }
+
+    /* 导航横向滚动，仅保留视图按钮 */
     .app-nav {
         width: 100%;
         border-right: none;
         border-bottom: 1px solid var(--border-color);
-        flex-direction: column; /* 改为垂直布局以容纳所有按钮 */
-        align-items: stretch; /* 按钮宽度撑满 */
-        padding: 8px;
+        flex-direction: column;
+        align-items: stretch;
+        padding: 8px 8px 0;
         height: auto;
         flex-shrink: 0;
     }
-    .app-nav.collapsed {
-        width: 100%;
-        padding: 8px;
-    }
-    .app-nav .nav-toggle {
-        display: none; /* 在移动端隐藏折叠按钮，因为导航栏始终可见 */
-    }
-    .app-nav .nav__title, .app-nav .search-filter-container, .app-nav .import-export-buttons {
-        display: none; /* 隐藏标题、搜索和导入/导出 */
-    }
+    .app-nav.collapsed { width: 100%; padding: 8px 8px 0; }
+    .app-nav .nav-toggle { display: none; }
+    .app-nav .nav__title,
+    .app-nav .search-filter-container,
+    .app-nav .import-export-buttons { display: none; }
     .app-nav .nav__view-buttons {
         display: flex;
-        flex-direction: row; /* 水平排列 */
-        overflow-x: auto; /* 允许水平滚动 */
-        -webkit-overflow-scrolling: touch; /* 在iOS上提供平滑滚动 */
-        scrollbar-width: none; /* Firefox */
-        -ms-overflow-style: none;  /* IE 10+ */
-        padding-bottom: 8px; /* 为滚动条留出空间 */
+        flex-direction: row;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        padding: 0 0 8px;
+        gap: 8px;
     }
-    .app-nav .nav__view-buttons::-webkit-scrollbar {
-        display: none; /* Chrome, Safari, Opera */
-    }
+    .app-nav .nav__view-buttons::-webkit-scrollbar { display: none; }
     .app-nav .nav__view-btn {
-        flex: 0 0 auto; /* 防止按钮被压缩 */
-        margin-right: 8px;
+        flex: 0 0 auto;
+        min-height: 40px;
         padding: 8px 12px;
         font-size: 14px;
-        white-space: nowrap; /* 防止文字换行 */
+        white-space: nowrap;
     }
 
+    /* 主内容纵向滚动，iOS 惯性滚动与安全区 */
     .main-content {
-        overflow-y: auto; /* 主内容区可以滚动 */
+        overflow-y: auto;
+        overflow-x: hidden;
+        -webkit-overflow-scrolling: touch;
         flex-grow: 1;
         padding: 12px;
+        padding-bottom: calc(16px + env(safe-area-inset-bottom));
     }
+
+    /* 看板：改为纵向堆叠，修正 grid 属性失效问题 */
     .kanban-board {
-        grid-auto-flow: row;
-        grid-template-columns: 1fr; /* 垂直堆叠 */
-        gap: 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
     }
-    .kanban-column__header {
-        padding: 8px 12px;
+    .kanban-column {
+        flex: 0 0 auto;
+        width: 100%;
+        min-width: 0; /* 防止列被撑开 */
     }
+    .kanban-column__header { padding: 8px 12px; }
     .kanban-column__title {
         font-size: 16px;
+        letter-spacing: 0.2px; /* 贴合中文 */
+        text-transform: none;
     }
     .kanban-column__cards {
-        height: auto; /* 自动高度 */
+        height: auto;
         overflow-y: visible;
         padding-right: 0;
+        -webkit-overflow-scrolling: auto;
+    }
+
+    /* 工具栏：允许换行并居中 */
+    .board-toolbar {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 6px;
+    }
+    .board-action-btn { padding: 8px 10px; font-size: 13px; }
+
+    /* 触控目标：新增按钮与卡片快捷操作放大点按区域 */
+    .add-task-btn {
+        width: 36px;
+        height: 36px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .task-card { padding: 14px; }
+    .task-card__quick-actions { gap: 8px; }
+    .qa-btn { padding: 6px 8px; font-size: 14px; }
+
+    /* 日历/提醒微调（保持原有的基础上稍作收紧） */
+    .calendar-header { margin-bottom: 12px; }
+    .calendar-title { font-size: 18px; }
+    .reminder-banner { top: 60px; padding: 8px 12px; }
+
+    /* 移动端拖拽提示样式 */
+    .mobile-dnd-hint {
+        margin: 8px 12px 0;
+        padding: 8px 12px;
+        background: var(--bg-tertiary);
+        color: var(--text-secondary);
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+    }
+    .mobile-dnd-hint__close {
+        width: 28px;
+        height: 28px;
+        border-radius: 6px;
+        background: var(--bg-secondary);
+        color: var(--text-secondary);
+        line-height: 1;
     }
 }
 
@@ -97,10 +161,8 @@
     .app-nav.collapsed {
         width: 60px;
     }
-    .kanban-board {
-        grid-auto-columns: minmax(280px, 1fr);
-        /* 默认已经是多列，这里可以微调 */
-    }
+    /* 平板维持横向布局，无需 grid 属性 */
+    .kanban-board { gap: 20px; }
 }
 
 /* --- 11. 响应式调整 --- */

@@ -2,7 +2,7 @@ import * as DOM from './dom.js';
 import state from './state.js';
 import { setView } from './view.js';
 import { STATUS_NAMES, PRIORITY_NAMES } from './constants.js';
-import { normalizeDate } from './utils.js';
+import { normalizeDate, escapeHtml } from './utils.js';
 
 /**
  * @description 获取指定日期的任务
@@ -60,12 +60,12 @@ function showTaskDetail(taskId) {
     const priorityNames = PRIORITY_NAMES;
     
     DOM.taskDetailContent.innerHTML = `
-        <div class="task-detail-item"><div class="task-detail-label">任务标题</div><div class="task-detail-value">${task.title}</div></div>
-        <div class="task-detail-item"><div class="task-detail-label">任务描述</div><div class="task-detail-value">${task.description || '无描述'}</div></div>
+        <div class="task-detail-item"><div class="task-detail-label">任务标题</div><div class="task-detail-value">${escapeHtml(task.title)}</div></div>
+        <div class="task-detail-item"><div class="task-detail-label">任务描述</div><div class="task-detail-value">${escapeHtml(task.description || '无描述')}</div></div>
         <div class="task-detail-item"><div class="task-detail-label">所属状态</div><div class="task-detail-value">${statusNames[task.status]}</div></div>
         <div class="task-detail-item"><div class="task-detail-label">优先级</div><div class="task-detail-value">${priorityNames[task.priority]}</div></div>
-        <div class="task-detail-item"><div class="task-detail-label">到期时间</div><div class="task-detail-value">${task.dueDate || '无截止日期'}</div></div>
-        ${task.labels && task.labels.length > 0 ? `<div class="task-detail-item"><div class="task-detail-label">标签</div><div class="task-detail-value">${task.labels.join(', ')}</div></div>` : ''}
+        <div class="task-detail-item"><div class="task-detail-label">到期时间</div><div class="task-detail-value">${escapeHtml(task.dueDate || '无截止日期')}</div></div>
+        ${task.labels && task.labels.length > 0 ? `<div class="task-detail-item"><div class="task-detail-label">标签</div><div class="task-detail-value">${task.labels.map(l => escapeHtml(l)).join(', ')}</div></div>` : ''}
     `;
     
     DOM.taskDetailModal.showModal();

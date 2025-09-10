@@ -179,11 +179,11 @@
                         ${getFileIcon(attachment.fileType)}
                     </div>
                     <div class="attachment-details">
-                        <div class="attachment-name" title="${attachment.fileName}">${attachment.fileName}</div>
+                        <div class="attachment-name" title="${escapeHtml(attachment.fileName)}">${escapeHtml(attachment.fileName)}</div>
                         <div class="attachment-meta">
                             ${formatFileSize(attachment.fileSize)} • 
                             ${formatDateTime(attachment.uploadTime)} • 
-                            ${attachment.uploader}
+                            ${escapeHtml(attachment.uploader)}
                         </div>
                     </div>
                 </div>
@@ -211,7 +211,7 @@
         container.innerHTML = comments.map(comment => `
             <div class="comment-item" data-id="${comment.id}">
                 <div class="comment-header">
-                    <span class="comment-author">${comment.author}</span>
+                    <span class="comment-author">${escapeHtml(comment.author)}</span>
                     <span class="comment-time">${formatDateTime(comment.timestamp)}</span>
                     <button class="comment-delete-btn" data-id="${comment.id}" title="删除评论">×</button>
                 </div>
@@ -323,7 +323,7 @@
         modal.innerHTML = `
             <div class="image-preview-content";>
                 <div class="image-preview-header">
-                    <h3>${attachment.fileName}</h3>
+                    <h3>${escapeHtml(attachment.fileName)}</h3>
                     <button class="image-preview-close">×</button>
                 </div>
                 <img src="${attachment.data}" alt="${attachment.fileName}" class="preview-image">
@@ -477,7 +477,7 @@
         container.innerHTML = `
             <div class="task-info-item">
                 <span class="task-info-label">描述：</span>
-                <span class="task-info-value">${task.description || '无描述'}</span>
+                <span class="task-info-value">${escapeHtml(task.description || '无描述')}</span>
             </div>
             <div class="task-info-item">
                 <span class="task-info-label">状态：</span>
@@ -489,12 +489,12 @@
             </div>
             <div class="task-info-item">
                 <span class="task-info-label">截止日期：</span>
-                <span class="task-info-value">${task.dueDate || '无截止日期'}</span>
+                <span class="task-info-value">${escapeHtml(task.dueDate || '无截止日期')}</span>
             </div>
             ${task.labels && task.labels.length > 0 ? `
             <div class="task-info-item">
                 <span class="task-info-label">标签：</span>
-                <span class="task-info-value">${task.labels.join(', ')}</span>
+                <span class="task-info-value">${task.labels.map(l => escapeHtml(l)).join(', ')}</span>
             </div>
             ` : ''}
         `;

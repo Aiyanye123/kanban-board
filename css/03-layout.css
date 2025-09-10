@@ -18,24 +18,53 @@
 }
 
 .app-header__title {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
     font-size: 24px;
+    font-weight: 700; /* 强化标题权重，避免过于简略 */
+    letter-spacing: 0.2px; /* 轻微字距，兼顾中英文 */
+    line-height: 1.1;
+}
+
+/* 标题前的品牌色圆点，提升识别度且与主题色一致 */
+.app-header__title::before {
+    content: '';
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--accent-color);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent-color) 18%, transparent);
 }
 
 .app-header__actions {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 12px;
+    padding: 6px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--bg-tertiary) 55%, transparent);
+    box-shadow: var(--shadow-xs);
 }
 
+/* 主题切换：统一尺寸为圆形图标按钮（更克制） */
 .theme-switcher {
-    padding: 8px 12px;
-    background-color: var(--accent-color);
-    color: white;
-    border-radius: 20px;
-    transition: background-color var(--duration) var(--easing);
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    background-color: color-mix(in srgb, var(--accent-color) 16%, transparent);
+    color: var(--accent-color);
+    transition: background-color var(--duration) var(--easing), color var(--duration) var(--easing), box-shadow var(--duration) var(--easing), transform var(--duration) var(--easing);
 }
 .theme-switcher:hover {
-    background-color: var(--accent-color-hover);
+    background-color: var(--accent-color);
+    color: #fff;
+    box-shadow: var(--shadow-sm);
+    transform: translateY(-1px);
 }
 
 /* 统一主题图标显示（浅色=太阳，深色=月亮） */
@@ -45,24 +74,27 @@
 [data-theme="dark"] .theme-switcher .icon-sun { display: none; }
 
 
-/* 多面板切换按钮样式 */
+/* 多面板切换：更轻量的“幽灵按钮”风格，悬浮再填充色 */
 .multi-panel-toggle {
-  padding: 8px 12px;
-  background-color: var(--accent-color);
-  color: white;
-  border-radius: 20px;
-  display: flex;
+  height: 40px;
+  padding: 0 14px;
+  background-color: color-mix(in srgb, var(--accent-color) 10%, transparent);
+  color: var(--accent-color);
+  border-radius: 999px;
+  display: inline-flex;
   align-items: center;
   gap: 8px;
   transition: all var(--duration) var(--easing);
   position: relative;
   overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--accent-color) 45%, transparent);
 }
 
 .multi-panel-toggle:hover {
-  background-color: var(--accent-color-hover);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  background-color: var(--accent-color);
+  color: #fff;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
 }
 
 .multi-panel-toggle:active {
@@ -104,10 +136,7 @@
   opacity: 0;
 }
 
-.toggle-text {
-  font-weight: bold;
-  font-size: 14px;
-}
+.toggle-text { font-weight: 600; font-size: 14px; letter-spacing: 0.2px; line-height: 1; }
 
 
 /* --- 3.2 Navigation --- */
@@ -160,12 +189,20 @@
     transform: rotate(180deg);
 }
 
+/* 导航区标题（更贴合整体风格，中文更友好） */
 .nav__title {
-    text-transform: uppercase;
-    letter-spacing: 2px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
     font-size: 12px;
+    font-weight: 600;
     color: var(--text-secondary);
-    margin-bottom: 24px;
+    letter-spacing: 0.5px; /* 减小字距以适配中文 */
+    text-transform: none;  /* 保留原样，避免中文全角字距异常 */
+    padding: 4px 8px;
+    border-radius: 999px;
+    background-color: color-mix(in srgb, var(--accent-color) 8%, transparent);
+    margin-bottom: 12px;
 }
 
 .nav__view-buttons {
@@ -175,6 +212,7 @@
     margin-bottom: 24px;
 }
 
+/* 导航条目：图标+文字的排版优化与统一节奏 */
 .nav__view-btn {
     display: flex;
     align-items: center;
@@ -184,11 +222,27 @@
     border-top-left-radius: 20px;
     border-bottom-left-radius: 20px;
     text-decoration: none;
-    font-weight: bold;
+    font-weight: 600;
     color: var(--text-secondary);
     text-align: left;
     width: 100%;
     transition: background-color var(--duration) var(--easing), color var(--duration) var(--easing), transform var(--duration) var(--easing);
+}
+
+/* 文字微调（更易读，不显单薄） */
+.nav__view-btn .nav__text {
+    font-size: 14px;
+    line-height: 1.15;
+    letter-spacing: 0.2px;
+}
+
+/* 图标容器定宽，保证文本起始位置对齐 */
+.nav__view-btn .nav__icon {
+    width: 22px;
+    height: 22px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .nav__view-btn[aria-pressed="true"] {
@@ -223,6 +277,38 @@
 }
 .app-nav.collapsed .nav__view-btn .nav__list-text {
     display: none;
+}
+
+/* 折叠状态下的悬浮提示（便于快速识别） */
+.app-nav.collapsed .nav__view-btn { position: relative; }
+.app-nav.collapsed .nav__view-btn:hover::after {
+    content: attr(title);
+    position: absolute;
+    left: 64px;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 6px 8px;
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    white-space: nowrap;
+    box-shadow: var(--shadow-sm);
+    pointer-events: none;
+    z-index: 30;
+}
+.app-nav.collapsed .nav__view-btn:hover::before {
+    content: '';
+    position: absolute;
+    left: 58px;
+    top: 50%;
+    width: 6px;
+    height: 6px;
+    background-color: var(--bg-secondary);
+    border-left: 1px solid var(--border-color);
+    border-top: 1px solid var(--border-color);
+    transform: translateY(-50%) rotate(45deg);
+    z-index: 31;
 }
 
 .import-export-buttons {

@@ -39,3 +39,17 @@ export function isWithinNextDaysISO(iso, days) {
     return due.getTime() >= today.getTime() && due.getTime() <= end.getTime();
 }
 
+/**
+ * @description 对字符串进行 HTML 转义，防止 XSS
+ * @param {string} text
+ * @returns {string}
+ */
+export function escapeHtml(text) {
+    const str = (text === null || text === undefined) ? '' : String(text);
+    return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
